@@ -1250,3 +1250,8 @@ select.form-control {
   color: var(--color-success);
   border: 1px solid rgba(var(--color-success-rgb), 0.25);
 }
+.text--danger {
+  color: red;
+  font-weight: bold;
+  font-size: 1.2em;
+}
