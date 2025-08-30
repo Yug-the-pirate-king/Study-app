@@ -68,14 +68,17 @@ const subjects = {
 };
 
 const gradeScale = {
-  "A+": {min: 90, points: 10},
-  "A": {min: 80, points: 9},
-  "B+": {min: 70, points: 8},
-  "B": {min: 60, points: 7},
-  "C+": {min: 55, points: 6},
-  "C": {min: 50, points: 5},
-  "D": {min: 40, points: 4},
-  "F": {min: 0, points: 0}
+  "EX": {min: 91, points: 10},
+  "AA`": {min: 86, points: 9},
+  "AB": {min: 81, points: 8},
+  "BB": {min: 76, points: 7},
+  "BC": {min: 71, points: 6},
+  "CC": {min: 66, points: 5},
+  "CD": {min: 61, points: 4},
+  "DD": {min: 56, points: 0},
+  "DE": {min: 51, points: 0},
+  "EE": {min: 40, points: 0},
+  "EF": {min: 0, points: 0},
 };
 
 // Global state
@@ -673,8 +676,8 @@ function calculateCGPA() {
     }
   }
   
-  // Calculate required marks for 9.0 CGPA (A grade = 80%)
-  const requiredTotal = 80; // 80% for A grade (9 points)
+  // Calculate required marks for 9.0 CGPA (A grade = 90%)
+  const requiredTotal = 90; // 90% for A grade (9 points)
   const currentPartial = caTotal + midSem;
   const requiredEndSem = Math.max(0, requiredTotal - currentPartial);
   
