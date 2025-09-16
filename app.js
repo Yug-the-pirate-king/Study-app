@@ -9,6 +9,7 @@ const subjects = {
       "Z-Transforms",
       "Functions of Complex Variables"
     ],
+
     totalChapters: 5
   },
   "Data Structures": {
