@@ -1,28 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Document metadata -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semester 3 Study Planner</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Semester 3 Study Planner - Generate schedules, organize materials, calculate CGPA, and compare performance modes.">
+    <meta name="referrer" content="no-referrer">
 
+    <!--
+        Content Security Policy:
+        Restricts resource loading to same-origin to reduce XSS/clickjacking risks.
+        Update the policy if external fonts, images, or scripts are added in the future.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self';">
+
+    <title>Semester 3 Study Planner</title>
+
+    <!-- Application styles -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
+        <!-- Page header -->
         <header class="header">
             <h1>Semester 3 Study Planner</h1>
             <p class="subtitle">Made By Yug Shah 🦋 with love</p>
         </header>
 
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-tab="study-plan">Study Plan Generator</button>
-            <button class="nav-tab" data-tab="folder-manager">Folder Manager</button>
-            <button class="nav-tab" data-tab="cgpa-calculator">CGPA Calculator</button>
-            <button class="nav-tab" data-tab="performance-modes">Performance Modes</button>
+        <!-- Navigation tabs -->
+        <nav class="nav-tabs" role="tablist" aria-label="Study planner sections">
+            <button class="nav-tab active" data-tab="study-plan" role="tab" aria-selected="true" aria-controls="study-plan" type="button">Study Plan Generator</button>
+            <button class="nav-tab" data-tab="folder-manager" role="tab" aria-selected="false" aria-controls="folder-manager" type="button">Folder Manager</button>
+            <button class="nav-tab" data-tab="cgpa-calculator" role="tab" aria-selected="false" aria-controls="cgpa-calculator" type="button">CGPA Calculator</button>
+            <button class="nav-tab" data-tab="performance-modes" role="tab" aria-selected="false" aria-controls="performance-modes" type="button">Performance Modes</button>
         </nav>
 
         <!-- Section 1: Study Plan Generator -->
-        <section id="study-plan" class="tab-content active">
+        <section id="study-plan" class="tab-content active" role="tabpanel">
             <div class="card">
                 <div class="card__header">
                     <h2>Smart Study Plan Generator</h2>
@@ -31,25 +45,28 @@
                 <div class="card__body">
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Study Mode</label>
-                            <select id="studyMode" class="form-control">
+                            <label class="form-label" for="studyMode">Study Mode</label>
+                            <select id="studyMode" class="form-control" required aria-required="true">
                                 <option value="easy">Easy Mode (1 chapter/day)</option>
                                 <option value="normal" selected>Normal Mode (2 chapters/day)</option>
                                 <option value="intense">Intense Mode (7-day crash)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Semester Start Date</label>
-                            <input type="date" id="startDate" class="form-control">
+                            <label class="form-label" for="startDate">Semester Start Date</label>
+                            <input type="date" id="startDate" class="form-control" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">End Semester Exam Date</label>
-                            <input type="date" id="examDate" class="form-control">
+                            <label class="form-label" for="examDate">End Semester Exam Date</label>
+                            <input type="date" id="examDate" class="form-control" required aria-required="true">
                         </div>
                     </div>
-                    
-                    <button id="generatePlan" class="btn btn--primary">Generate Study Plan</button>
-                    
+
+                    <button id="generatePlan" class="btn btn--primary" type="button">Generate Study Plan</button>
+
+                    <!-- Error feedback for the study plan generator -->
+                    <p id="studyPlanError" class="error-message hidden" role="alert" aria-live="assertive"></p>
+
                     <div id="studyPlanOutput" class="study-plan-output hidden">
                         <h3>Your Study Schedule</h3>
                         <div class="progress-summary">
@@ -65,7 +82,7 @@
         </section>
 
         <!-- Section 2: Folder Manager -->
-        <section id="folder-manager" class="tab-content">
+        <section id="folder-manager" class="tab-content" role="tabpanel">
             <div class="card">
                 <div class="card__header">
                     <h2>Study Material Organizer</h2>
@@ -74,10 +91,15 @@
                 </div>
                 <div class="card__body">
                     <div class="folder-controls">
-                        <input type="text" id="searchMaterials" class="form-control" placeholder="Search materials...">
-                        <button id="addMaterial" class="btn btn--secondary">Add Material</button>
+                        <label for="searchMaterials" class="visually-hidden">Search materials</label>
+                        <input type="text" id="searchMaterials" class="form-control"
+                               placeholder="Search materials..."
+                               maxlength="100"
+                               autocomplete="off"
+                               aria-label="Search materials">
+                        <button id="addMaterial" class="btn btn--secondary" type="button">Add Material</button>
                     </div>
-                    
+
                     <div class="folder-structure" id="folderStructure">
                         <!-- Folder tree will be generated by JavaScript -->
                     </div>
@@ -86,7 +108,7 @@
         </section>
 
         <!-- Section 3: CGPA Calculator -->
-        <section id="cgpa-calculator" class="tab-content">
+        <section id="cgpa-calculator" class="tab-content" role="tabpanel">
             <div class="card">
                 <div class="card__header">
                     <h2>CGPA Target Calculator</h2>
@@ -94,36 +116,39 @@
                 </div>
                 <div class="card__body">
                     <div class="subject-selector">
-                        <label class="form-label">Select Subject</label>
-                        <select id="subjectSelect" class="form-control">
+                        <label class="form-label" for="subjectSelect">Select Subject</label>
+                        <select id="subjectSelect" class="form-control" required aria-required="true">
                             <!-- Options will be populated by JavaScript -->
                         </select>
                     </div>
 
                     <div class="marks-input-grid">
                         <div class="form-group">
-                            <label class="form-label">Class Test 1 (10 marks)</label>
-                            <input type="number" id="ct1" class="form-control" max="10" min="0">
+                            <label class="form-label" for="ct1">Class Test 1 (10 marks)</label>
+                            <input type="number" id="ct1" class="form-control" min="0" max="10" step="1" inputmode="numeric" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Class Test 2 (10 marks)</label>
-                            <input type="number" id="ct2" class="form-control" max="10" min="0">
+                            <label class="form-label" for="ct2">Class Test 2 (10 marks)</label>
+                            <input type="number" id="ct2" class="form-control" min="0" max="10" step="1" inputmode="numeric" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Assignment (10 marks)</label>
-                            <input type="number" id="assignment" class="form-control" max="10" min="0">
+                            <label class="form-label" for="assignment">Assignment (10 marks)</label>
+                            <input type="number" id="assignment" class="form-control" min="0" max="10" step="1" inputmode="numeric" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Mid Semester (20 marks)</label>
-                            <input type="number" id="midSem" class="form-control" max="20" min="0">
+                            <label class="form-label" for="midSem">Mid Semester (20 marks)</label>
+                            <input type="number" id="midSem" class="form-control" min="0" max="20" step="1" inputmode="numeric" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">End Semester (60 marks)</label>
-                            <input type="number" id="endSem" class="form-control" max="60" min="0">
+                            <label class="form-label" for="endSem">End Semester (60 marks)</label>
+                            <input type="number" id="endSem" class="form-control" min="0" max="60" step="1" inputmode="numeric" required aria-required="true">
                         </div>
                     </div>
 
-                    <button id="calculateCGPA" class="btn btn--primary">Calculate CGPA</button>
+                    <button id="calculateCGPA" class="btn btn--primary" type="button">Calculate CGPA</button>
+
+                    <!-- Error feedback for the CGPA calculator -->
+                    <p id="cgpaError" class="error-message hidden" role="alert" aria-live="assertive"></p>
 
                     <div id="cgpaResults" class="cgpa-results hidden">
                         <div class="results-grid">
@@ -150,7 +175,7 @@
         </section>
 
         <!-- Section 4: Performance Modes -->
-        <section id="performance-modes" class="tab-content">
+        <section id="performance-modes" class="tab-content" role="tabpanel">
             <div class="card">
                 <div class="card__header">
                     <h2>Performance Modes Comparison</h2>
@@ -175,7 +200,7 @@
                                 </div>
                             </div>
                             <p class="mode-description">Relaxed pace with plenty of time for revision</p>
-                            <button class="btn btn--outline mode-select" data-mode="easy">Select Easy Mode</button>
+                            <button class="btn btn--outline mode-select" data-mode="easy" type="button">Select Easy Mode</button>
                         </div>
 
                         <div class="mode-card" data-mode="normal">
@@ -195,7 +220,7 @@
                                 </div>
                             </div>
                             <p class="mode-description">Balanced approach with steady progress</p>
-                            <button class="btn btn--outline mode-select" data-mode="normal">Select Normal Mode</button>
+                            <button class="btn btn--outline mode-select" data-mode="normal" type="button">Select Normal Mode</button>
                         </div>
 
                         <div class="mode-card" data-mode="intense">
@@ -215,7 +240,7 @@
                                 </div>
                             </div>
                             <p class="mode-description">Last-minute preparation with high intensity</p>
-                            <button class="btn btn--outline mode-select" data-mode="intense">Select Intense Mode</button>
+                            <button class="btn btn--outline mode-select" data-mode="intense" type="button">Select Intense Mode</button>
                         </div>
                     </div>
 
@@ -228,33 +253,41 @@
         </section>
     </div>
 
-    <!-- Add Material Modal -->
-<!--     <div id="addMaterialModal" class="modal hidden">
+    <!--
+        Add Material Modal (currently disabled while SQL integration is in progress).
+        Kept commented to preserve the original feature placeholder.
+    -->
+    <!--
+    <div id="addMaterialModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Add Study Material</h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" type="button" aria-label="Close modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">Subject</label>
-                    <select id="materialSubject" class="form-control">
+                    <label class="form-label" for="materialSubject">Subject</label>
+                    <select id="materialSubject" class="form-control" required aria-required="true">
                         <!-- Options populated by JS -->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Chapter</label>
-                    <select id="materialChapter" class="form-control">
+                    <label class="form-label" for="materialChapter">Chapter</label>
+                    <select id="materialChapter" class="form-control" required aria-required="true">
                         <!-- Options populated by JS -->
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Material Name</label>
-                    <input type="text" id="materialName" class="form-control" placeholder="e.g., Lecture Notes, Textbook PDF">
+                    <label class="form-label" for="materialName">Material Name</label>
+                    <input type="text" id="materialName" class="form-control"
+                           placeholder="e.g., Lecture Notes, Textbook PDF"
+                           maxlength="150"
+                           autocomplete="off"
+                           required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Material Type</label>
-                    <select id="materialType" class="form-control">
+                    <label class="form-label" for="materialType">Material Type</label>
+                    <select id="materialType" class="form-control" required aria-required="true">
                         <option value="pdf">PDF Document</option>
                         <option value="ppt">PowerPoint Presentation</option>
                         <option value="notes">Handwritten Notes</option>
@@ -264,12 +297,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn--secondary" id="cancelMaterial">Cancel</button>
-                <button class="btn btn--primary" id="saveMaterial">Add Material</button>
+                <button class="btn btn--secondary" id="cancelMaterial" type="button">Cancel</button>
+                <button class="btn btn--primary" id="saveMaterial" type="button">Add Material</button>
             </div>
         </div>
     </div>
- -->
+    -->
+
+    <!-- Application JavaScript loaded from a local file -->
     <script src="app.js"></script>
 </body>
 </html>
