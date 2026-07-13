@@ -1,7 +1,20 @@
+/*
+ * Study App — Design System & Application Styles
+ *
+ * This stylesheet defines the full visual layer for the application:
+ *  1. Theme tokens (colors, typography, spacing, shadows, motion)
+ *  2. Base element resets and typography
+ *  3. Reusable components (buttons, forms, cards, status, layout)
+ *  4. Utility classes and accessibility helpers
+ *  5. Application-specific views and responsive overrides
+ */
+
+/* ------------------------------------------------------------------
+ * 1. Theme tokens
+ * ------------------------------------------------------------------ */
+
 :root {
-  /* Primitive Color Tokens */
-  --color-white: #ffffff;
-  --color-black: #000000;
+  /* Primitive color palette */
   --color-cream-50: #fcfcf9;
   --color-cream-100: #fffffd;
   --color-gray-200: #f5f5f5;
@@ -23,7 +36,7 @@
   --color-orange-400: #e68161;
   --color-orange-500: #a84b2f;
 
-  /* Background color tokens (Light Mode) */
+  /* Decorative background tints (light mode) */
   --color-bg-1: rgb(59 130 246 / 8%);
   --color-bg-2: rgb(245 158 11 / 8%);
   --color-bg-3: rgb(34 197 94 / 8%);
@@ -33,7 +46,7 @@
   --color-bg-7: rgb(236 72 153 / 8%);
   --color-bg-8: rgb(6 182 212 / 8%);
 
-  /* Semantic Color Tokens (Light Mode) */
+  /* Semantic color tokens (light mode) */
   --color-background: var(--color-cream-50);
   --color-surface: var(--color-cream-100);
   --color-text: var(--color-slate-900);
@@ -54,14 +67,24 @@
   --color-info: var(--color-slate-500);
   --color-focus-ring: color-mix(in srgb, var(--color-teal-500) 40%, transparent);
 
-  /* Common style patterns */
+  /* Status surface tokens — derived from semantic colors */
+  --color-error-bg: color-mix(in srgb, var(--color-error) 15%, transparent);
+  --color-error-border: color-mix(in srgb, var(--color-error) 25%, transparent);
+  --color-success-bg: color-mix(in srgb, var(--color-success) 15%, transparent);
+  --color-success-border: color-mix(in srgb, var(--color-success) 25%, transparent);
+  --color-warning-bg: color-mix(in srgb, var(--color-warning) 15%, transparent);
+  --color-warning-border: color-mix(in srgb, var(--color-warning) 25%, transparent);
+  --color-info-bg: color-mix(in srgb, var(--color-info) 15%, transparent);
+  --color-info-border: color-mix(in srgb, var(--color-info) 25%, transparent);
+
+  /* Focus, caret, and reusable patterns */
   --focus-ring: 0 0 0 3px var(--color-focus-ring);
   --focus-outline: 2px solid var(--color-primary);
   --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   --select-caret: var(--select-caret-light);
 
-  /* Typography */
+  /* Typography scale */
   --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
@@ -69,13 +92,11 @@
   --font-size-xs: 11px;
   --font-size-sm: 12px;
   --font-size-base: 14px;
-  --font-size-md: 14px;
   --font-size-lg: 16px;
   --font-size-xl: 18px;
   --font-size-2xl: 20px;
   --font-size-3xl: 24px;
   --font-size-4xl: 30px;
-  --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 550;
   --font-weight-bold: 600;
@@ -83,8 +104,7 @@
   --line-height-normal: 1.5;
   --letter-spacing-tight: -0.01em;
 
-  /* Spacing */
-  --space-0: 0;
+  /* Spacing scale */
   --space-1: 1px;
   --space-2: 2px;
   --space-4: 4px;
@@ -97,15 +117,14 @@
   --space-24: 24px;
   --space-32: 32px;
 
-  /* Border Radius */
+  /* Border radius scale */
   --radius-sm: 6px;
   --radius-base: 8px;
   --radius-md: 10px;
   --radius-lg: 12px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgb(0 0 0 / 2%);
+  /* Shadow scale */
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 4%), 0 1px 2px rgb(0 0 0 / 2%);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 4%),
     0 2px 4px -1px rgb(0 0 0 / 2%);
@@ -126,7 +145,13 @@
   --container-xl: 1280px;
 }
 
-/* Dark mode colors */
+/* ------------------------------------------------------------------
+ * 2. Dark mode overrides
+ *
+ * The system responds both to the OS preference and to an explicit
+ * data-color-scheme attribute on the root element.
+ * ------------------------------------------------------------------ */
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg-1: rgb(29 78 216 / 15%);
@@ -157,9 +182,11 @@
     --color-warning: var(--color-orange-400);
     --color-info: var(--color-gray-300);
     --color-focus-ring: color-mix(in srgb, var(--color-teal-300) 40%, transparent);
+    --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+
     --shadow-inset-sm: inset 0 1px 0 rgb(255 255 255 / 10%),
       inset 0 -1px 0 rgb(0 0 0 / 15%);
-    --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+
     --select-caret: var(--select-caret-dark);
   }
 }
@@ -193,9 +220,11 @@
   --color-warning: var(--color-orange-400);
   --color-info: var(--color-gray-300);
   --color-focus-ring: color-mix(in srgb, var(--color-teal-300) 40%, transparent);
+  --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+
   --shadow-inset-sm: inset 0 1px 0 rgb(255 255 255 / 10%),
     inset 0 -1px 0 rgb(0 0 0 / 15%);
-  --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+
   --select-caret: var(--select-caret-dark);
 }
 
@@ -228,12 +257,29 @@
   --color-warning: var(--color-orange-500);
   --color-info: var(--color-slate-500);
   --color-focus-ring: color-mix(in srgb, var(--color-teal-500) 40%, transparent);
+
   --shadow-inset-sm: inset 0 1px 0 rgb(255 255 255 / 15%),
     inset 0 -1px 0 rgb(0 0 0 / 3%);
+
   --select-caret: var(--select-caret-light);
 }
 
-/* Base styles */
+/* ------------------------------------------------------------------
+ * 3. Font faces
+ * ------------------------------------------------------------------ */
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------------
+ * 4. Base styles
+ * ------------------------------------------------------------------ */
+
 html {
   font-size: var(--font-size-base);
   font-family: var(--font-family-base);
@@ -244,18 +290,21 @@ html {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-}
-
 *,
 *::before,
 *::after {
   box-sizing: inherit;
 }
 
-/* Typography */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ------------------------------------------------------------------
+ * 5. Typography
+ * ------------------------------------------------------------------ */
+
 :is(h1, h2, h3, h4, h5, h6) {
   margin: 0;
   font-weight: var(--font-weight-semibold);
@@ -264,28 +313,15 @@ body {
   letter-spacing: var(--letter-spacing-tight);
 }
 
-h1 {
-  font-size: var(--font-size-4xl);
-}
-h2 {
-  font-size: var(--font-size-3xl);
-}
-h3 {
-  font-size: var(--font-size-2xl);
-}
-h4 {
-  font-size: var(--font-size-xl);
-}
-h5 {
-  font-size: var(--font-size-lg);
-}
-h6 {
-  font-size: var(--font-size-md);
-}
+h1 { font-size: var(--font-size-4xl); }
+h2 { font-size: var(--font-size-3xl); }
+h3 { font-size: var(--font-size-2xl); }
+h4 { font-size: var(--font-size-xl); }
+h5 { font-size: var(--font-size-lg); }
+h6 { font-size: var(--font-size-base); }
 
 p {
-  margin: 0;
-  margin-block-end: var(--space-16);
+  margin-block: 0 var(--space-16);
 }
 
 a {
@@ -322,7 +358,10 @@ pre code {
   padding: 0;
 }
 
-/* Buttons */
+/* ------------------------------------------------------------------
+ * 6. Buttons
+ * ------------------------------------------------------------------ */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -330,7 +369,7 @@ pre code {
   padding: var(--space-8) var(--space-16);
   border-radius: var(--radius-base);
   font-size: var(--font-size-base);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   line-height: 1.5;
   cursor: pointer;
   transition: background-color var(--duration-normal) var(--ease-standard),
@@ -404,12 +443,15 @@ pre code {
   cursor: not-allowed;
 }
 
-/* Form elements */
+/* ------------------------------------------------------------------
+ * 7. Form elements
+ * ------------------------------------------------------------------ */
+
 .form-control {
   display: block;
   width: 100%;
   padding: var(--space-8) var(--space-12);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   line-height: 1.5;
   color: var(--color-text);
   background-color: var(--color-surface);
@@ -452,7 +494,10 @@ select.form-control {
   margin-block-end: var(--space-16);
 }
 
-/* Card component */
+/* ------------------------------------------------------------------
+ * 8. Card component
+ * ------------------------------------------------------------------ */
+
 .card {
   background-color: var(--color-surface);
   border-radius: var(--radius-lg);
@@ -475,7 +520,10 @@ select.form-control {
   border-block-end: 1px solid var(--color-card-border-inner);
 }
 
-/* Status indicators */
+/* ------------------------------------------------------------------
+ * 9. Status indicators
+ * ------------------------------------------------------------------ */
+
 .status {
   display: inline-flex;
   align-items: center;
@@ -487,30 +535,33 @@ select.form-control {
 }
 
 .status--success {
-  background-color: color-mix(in srgb, var(--color-success) 15%, transparent);
+  background-color: var(--color-success-bg);
   color: var(--color-success);
-  border-color: color-mix(in srgb, var(--color-success) 25%, transparent);
+  border-color: var(--color-success-border);
 }
 
 .status--error {
-  background-color: color-mix(in srgb, var(--color-error) 15%, transparent);
+  background-color: var(--color-error-bg);
   color: var(--color-error);
-  border-color: color-mix(in srgb, var(--color-error) 25%, transparent);
+  border-color: var(--color-error-border);
 }
 
 .status--warning {
-  background-color: color-mix(in srgb, var(--color-warning) 15%, transparent);
+  background-color: var(--color-warning-bg);
   color: var(--color-warning);
-  border-color: color-mix(in srgb, var(--color-warning) 25%, transparent);
+  border-color: var(--color-warning-border);
 }
 
 .status--info {
-  background-color: color-mix(in srgb, var(--color-info) 15%, transparent);
+  background-color: var(--color-info-bg);
   color: var(--color-info);
-  border-color: color-mix(in srgb, var(--color-info) 25%, transparent);
+  border-color: var(--color-info-border);
 }
 
-/* Container layout */
+/* ------------------------------------------------------------------
+ * 10. Container layout
+ * ------------------------------------------------------------------ */
+
 .container {
   width: 100%;
   margin-inline: auto;
@@ -518,92 +569,53 @@ select.form-control {
 }
 
 @media (min-width: 640px) {
-  .container {
-    max-width: var(--container-sm);
-  }
+  .container { max-width: var(--container-sm); }
 }
+
 @media (min-width: 768px) {
-  .container {
-    max-width: var(--container-md);
-  }
+  .container { max-width: var(--container-md); }
 }
+
 @media (min-width: 1024px) {
-  .container {
-    max-width: var(--container-lg);
-  }
+  .container { max-width: var(--container-lg); }
 }
+
 @media (min-width: 1280px) {
-  .container {
-    max-width: var(--container-xl);
-  }
+  .container { max-width: var(--container-xl); }
 }
 
-/* Utility classes */
-.flex {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.items-center {
-  align-items: center;
-}
-.justify-center {
-  justify-content: center;
-}
-.justify-between {
-  justify-content: space-between;
-}
-.gap-4 {
-  gap: var(--space-4);
-}
-.gap-8 {
-  gap: var(--space-8);
-}
-.gap-16 {
-  gap: var(--space-16);
-}
+/* ------------------------------------------------------------------
+ * 11. Utility classes
+ * ------------------------------------------------------------------ */
 
-.m-0 {
-  margin: 0;
-}
-.mt-8 {
-  margin-block-start: var(--space-8);
-}
-.mb-8 {
-  margin-block-end: var(--space-8);
-}
-.mx-8 {
-  margin-inline: var(--space-8);
-}
-.my-8 {
-  margin-block: var(--space-8);
-}
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-4 { gap: var(--space-4); }
+.gap-8 { gap: var(--space-8); }
+.gap-16 { gap: var(--space-16); }
 
-.p-0 {
-  padding: 0;
-}
-.py-8 {
-  padding-block: var(--space-8);
-}
-.px-8 {
-  padding-inline: var(--space-8);
-}
-.py-16 {
-  padding-block: var(--space-16);
-}
-.px-16 {
-  padding-inline: var(--space-16);
-}
+.m-0 { margin: 0; }
+.mt-8 { margin-block-start: var(--space-8); }
+.mb-8 { margin-block-end: var(--space-8); }
+.mx-8 { margin-inline: var(--space-8); }
+.my-8 { margin-block: var(--space-8); }
 
-.block {
-  display: block;
-}
-.hidden {
-  display: none;
-}
+.p-0 { padding: 0; }
+.py-8 { padding-block: var(--space-8); }
+.px-8 { padding-inline: var(--space-8); }
+.py-16 { padding-block: var(--space-16); }
+.px-16 { padding-inline: var(--space-16); }
 
-/* Accessibility */
+.block { display: block; }
+.hidden { display: none; }
+
+/* ------------------------------------------------------------------
+ * 12. Accessibility
+ * ------------------------------------------------------------------ */
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -621,7 +633,14 @@ select.form-control {
   outline-offset: 2px;
 }
 
-/* Dark mode specifics */
+/* ------------------------------------------------------------------
+ * 13. Dark mode specific component tweaks
+ *
+ * --color-border-secondary is only defined in dark themes; in light
+ * mode the declaration below is invalid and falls back to the base
+ * outline border color.
+ * ------------------------------------------------------------------ */
+
 :root[data-color-scheme="dark"] .btn--outline {
   border-color: var(--color-border-secondary);
 }
@@ -632,16 +651,11 @@ select.form-control {
   }
 }
 
-@font-face {
-  font-family: 'FKGroteskNeue';
-  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+/* ------------------------------------------------------------------
+ * 14. Application-specific styles
+ * ------------------------------------------------------------------ */
 
-/* END PERPLEXITY DESIGN SYSTEM */
-/* Application-specific styles */
+/* Header */
 .header {
   text-align: center;
   padding-block: var(--space-24);
@@ -657,11 +671,11 @@ select.form-control {
 
 .subtitle {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-lg);
   margin: 0;
 }
 
-/* Navigation Tabs */
+/* Navigation tabs */
 .nav-tabs {
   display: flex;
   gap: var(--space-4);
@@ -697,7 +711,7 @@ select.form-control {
   border-block-end-color: var(--color-primary);
 }
 
-/* Tab Content */
+/* Tab content panels */
 .tab-content {
   display: none;
 }
@@ -706,7 +720,7 @@ select.form-control {
   display: block;
 }
 
-/* Form Layouts */
+/* Form layouts */
 .form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -721,7 +735,7 @@ select.form-control {
   margin-block-end: var(--space-24);
 }
 
-/* Study Plan Output */
+/* Study plan output */
 .study-plan-output {
   margin-block-start: var(--space-24);
   padding: var(--space-20);
@@ -790,7 +804,7 @@ select.form-control {
   opacity: 0.6;
 }
 
-/* Folder Manager */
+/* Folder manager */
 .folder-controls {
   display: flex;
   gap: var(--space-12);
@@ -886,7 +900,7 @@ select.form-control {
   background: var(--color-secondary);
 }
 
-/* CGPA Calculator */
+/* CGPA calculator */
 .subject-selector {
   margin-block-end: var(--space-20);
 }
@@ -928,7 +942,7 @@ select.form-control {
   color: var(--color-primary);
 }
 
-/* Performance Modes */
+/* Performance modes */
 .modes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1077,7 +1091,10 @@ select.form-control {
   border-block-start: 1px solid var(--color-border);
 }
 
-/* Responsive Design */
+/* ------------------------------------------------------------------
+ * 15. Responsive design
+ * ------------------------------------------------------------------ */
+
 @media (max-width: 768px) {
   .nav-tabs {
     flex-wrap: nowrap;
@@ -1120,7 +1137,10 @@ select.form-control {
   }
 }
 
-/* Animation utilities */
+/* ------------------------------------------------------------------
+ * 16. Animation utilities
+ * ------------------------------------------------------------------ */
+
 .fade-in {
   animation: fadeIn var(--duration-normal) var(--ease-standard);
 }
@@ -1136,7 +1156,10 @@ select.form-control {
   }
 }
 
-/* Status badges */
+/* ------------------------------------------------------------------
+ * 17. Status badges
+ * ------------------------------------------------------------------ */
+
 .status-badge {
   display: inline-block;
   padding: var(--space-4) var(--space-8);
@@ -1149,21 +1172,21 @@ select.form-control {
 }
 
 .status-badge--high-priority {
-  background: color-mix(in srgb, var(--color-error) 15%, transparent);
+  background: var(--color-error-bg);
   color: var(--color-error);
-  border-color: color-mix(in srgb, var(--color-error) 25%, transparent);
+  border-color: var(--color-error-border);
 }
 
 .status-badge--medium-priority {
-  background: color-mix(in srgb, var(--color-warning) 15%, transparent);
+  background: var(--color-warning-bg);
   color: var(--color-warning);
-  border-color: color-mix(in srgb, var(--color-warning) 25%, transparent);
+  border-color: var(--color-warning-border);
 }
 
 .status-badge--low-priority {
-  background: color-mix(in srgb, var(--color-success) 15%, transparent);
+  background: var(--color-success-bg);
   color: var(--color-success);
-  border-color: color-mix(in srgb, var(--color-success) 25%, transparent);
+  border-color: var(--color-success-border);
 }
 
 .text--danger {
@@ -1171,6 +1194,10 @@ select.form-control {
   font-weight: var(--font-weight-bold);
   font-size: 1.2em;
 }
+
+/* ------------------------------------------------------------------
+ * 18. Reduced motion
+ * ------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
   *,
