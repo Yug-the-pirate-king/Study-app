@@ -1,275 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semester 3 Study Planner</title>
-    <link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semester 3 Study Planner</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Semester 3 Study Planner</h1>
-            <p class="subtitle">Made By Yug Shah 🦋 with love</p>
-        </header>
+  <div class="container">
+    <header class="header">
+      <h1>Semester 3 Study Planner</h1>
+      <p class="subtitle">Made By Yug Shah 🦋 with love</p>
+    </header>
 
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-tab="study-plan">Study Plan Generator</button>
-            <button class="nav-tab" data-tab="folder-manager">Folder Manager</button>
-            <button class="nav-tab" data-tab="cgpa-calculator">CGPA Calculator</button>
-            <button class="nav-tab" data-tab="performance-modes">Performance Modes</button>
-        </nav>
+    <nav class="nav-tabs" aria-label="Application sections" role="tablist">
+      <button class="nav-tab active" id="tab-study-plan" type="button" role="tab" aria-selected="true" aria-controls="study-plan" data-tab="study-plan">Study Plan Generator</button>
+      <button class="nav-tab" id="tab-folder-manager" type="button" role="tab" aria-selected="false" aria-controls="folder-manager" data-tab="folder-manager" tabindex="-1">Folder Manager</button>
+      <button class="nav-tab" id="tab-cgpa-calculator" type="button" role="tab" aria-selected="false" aria-controls="cgpa-calculator" data-tab="cgpa-calculator" tabindex="-1">CGPA Calculator</button>
+      <button class="nav-tab" id="tab-performance-modes" type="button" role="tab" aria-selected="false" aria-controls="performance-modes" data-tab="performance-modes" tabindex="-1">Performance Modes</button>
+    </nav>
 
-        <!-- Section 1: Study Plan Generator -->
-        <section id="study-plan" class="tab-content active">
-            <div class="card">
-                <div class="card__header">
-                    <h2>Smart Study Plan Generator</h2>
-                    <p>Generate personalized study schedules based on your preferred intensity</p>
-                </div>
-                <div class="card__body">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Study Mode</label>
-                            <select id="studyMode" class="form-control">
-                                <option value="easy">Easy Mode (1 chapter/day)</option>
-                                <option value="normal" selected>Normal Mode (2 chapters/day)</option>
-                                <option value="intense">Intense Mode (7-day crash)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Semester Start Date</label>
-                            <input type="date" id="startDate" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">End Semester Exam Date</label>
-                            <input type="date" id="examDate" class="form-control">
-                        </div>
-                    </div>
-                    
-                    <button id="generatePlan" class="btn btn--primary">Generate Study Plan</button>
-                    
-                    <div id="studyPlanOutput" class="study-plan-output hidden">
-                        <h3>Your Study Schedule</h3>
-                        <div class="progress-summary">
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="overallProgress"></div>
-                            </div>
-                            <span id="progressText">0% Complete</span>
-                        </div>
-                        <div id="planDetails" class="plan-details"></div>
-                    </div>
-                </div>
+    <main>
+      <section id="study-plan" class="tab-content active" role="tabpanel" aria-labelledby="tab-study-plan" aria-hidden="false">
+        <article class="card">
+          <header class="card__header">
+            <h2>Smart Study Plan Generator</h2>
+            <p>Generate personalized study schedules based on your preferred intensity</p>
+          </header>
+          <div class="card__body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="study-mode">Study Mode</label>
+                <select id="study-mode" class="form-control">
+                  <option value="easy">Easy Mode (1 chapter/day)</option>
+                  <option value="normal" selected>Normal Mode (2 chapters/day)</option>
+                  <option value="intense">Intense Mode (7-day crash)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="start-date">Semester Start Date</label>
+                <input type="date" id="start-date" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="exam-date">End Semester Exam Date</label>
+                <input type="date" id="exam-date" class="form-control">
+              </div>
             </div>
-        </section>
 
-        <!-- Section 2: Folder Manager -->
-        <section id="folder-manager" class="tab-content">
-            <div class="card">
-                <div class="card__header">
-                    <h2>Study Material Organizer</h2>
-                    <p>Organize your study materials by subject and chapter</p>
-                    <p class="text--danger">Sorry But this is under progress Because I am learning sql</p>
+            <button id="generate-plan" class="btn btn--primary" type="button">Generate Study Plan</button>
+
+            <div id="study-plan-output" class="study-plan-output hidden" aria-live="polite" aria-hidden="true">
+              <h3>Your Study Schedule</h3>
+              <div class="progress-summary">
+                <div id="overall-progress-bar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="progress-text">
+                  <div id="overall-progress" class="progress-fill"></div>
                 </div>
-                <div class="card__body">
-                    <div class="folder-controls">
-                        <input type="text" id="searchMaterials" class="form-control" placeholder="Search materials...">
-                        <button id="addMaterial" class="btn btn--secondary">Add Material</button>
-                    </div>
-                    
-                    <div class="folder-structure" id="folderStructure">
-                        <!-- Folder tree will be generated by JavaScript -->
-                    </div>
-                </div>
+                <span id="progress-text">0% Complete</span>
+              </div>
+              <div id="plan-details" class="plan-details"></div>
             </div>
-        </section>
+          </div>
+        </article>
+      </section>
 
-        <!-- Section 3: CGPA Calculator -->
-        <section id="cgpa-calculator" class="tab-content">
-            <div class="card">
-                <div class="card__header">
-                    <h2>CGPA Target Calculator</h2>
-                    <p>Calculate marks needed to achieve 9.0 CGPA target</p>
-                </div>
-                <div class="card__body">
-                    <div class="subject-selector">
-                        <label class="form-label">Select Subject</label>
-                        <select id="subjectSelect" class="form-control">
-                            <!-- Options will be populated by JavaScript -->
-                        </select>
-                    </div>
-
-                    <div class="marks-input-grid">
-                        <div class="form-group">
-                            <label class="form-label">Class Test 1 (10 marks)</label>
-                            <input type="number" id="ct1" class="form-control" max="10" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Class Test 2 (10 marks)</label>
-                            <input type="number" id="ct2" class="form-control" max="10" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Assignment (10 marks)</label>
-                            <input type="number" id="assignment" class="form-control" max="10" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Mid Semester (20 marks)</label>
-                            <input type="number" id="midSem" class="form-control" max="20" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">End Semester (60 marks)</label>
-                            <input type="number" id="endSem" class="form-control" max="60" min="0">
-                        </div>
-                    </div>
-
-                    <button id="calculateCGPA" class="btn btn--primary">Calculate CGPA</button>
-
-                    <div id="cgpaResults" class="cgpa-results hidden">
-                        <div class="results-grid">
-                            <div class="result-card">
-                                <h4>Current Score</h4>
-                                <div class="score" id="currentScore">0/100</div>
-                            </div>
-                            <div class="result-card">
-                                <h4>Current Grade</h4>
-                                <div class="grade" id="currentGrade">-</div>
-                            </div>
-                            <div class="result-card">
-                                <h4>Required for 9.0 CGPA</h4>
-                                <div class="requirement" id="requirement">-</div>
-                            </div>
-                            <div class="result-card">
-                                <h4>Overall CGPA</h4>
-                                <div class="cgpa" id="overallCGPA">0.0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <section id="folder-manager" class="tab-content" role="tabpanel" aria-labelledby="tab-folder-manager" aria-hidden="true">
+        <article class="card">
+          <header class="card__header">
+            <h2>Study Material Organizer</h2>
+            <p>Organize your study materials by subject and chapter</p>
+            <p class="text--danger">Sorry But this is under progress Because I am learning sql</p>
+          </header>
+          <div class="card__body">
+            <div class="folder-controls">
+              <label class="visually-hidden" for="search-materials">Search materials</label>
+              <input type="search" id="search-materials" class="form-control" placeholder="Search materials...">
+              <button id="add-material" class="btn btn--secondary" type="button">Add Material</button>
             </div>
-        </section>
+            <div id="folder-structure" class="folder-structure"></div>
+          </div>
+        </article>
+      </section>
 
-        <!-- Section 4: Performance Modes -->
-        <section id="performance-modes" class="tab-content">
-            <div class="card">
-                <div class="card__header">
-                    <h2>Performance Modes Comparison</h2>
-                    <p>Compare different study approaches and select your preferred method</p>
-                </div>
-                <div class="card__body">
-                    <div class="modes-grid">
-                        <div class="mode-card" data-mode="easy">
-                            <h3>Easy Mode</h3>
-                            <div class="mode-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Chapters per day:</span>
-                                    <span class="stat-value">1</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Study duration:</span>
-                                    <span class="stat-value" id="easyDuration">- days</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Daily workload:</span>
-                                    <span class="stat-value">Light</span>
-                                </div>
-                            </div>
-                            <p class="mode-description">Relaxed pace with plenty of time for revision</p>
-                            <button class="btn btn--outline mode-select" data-mode="easy">Select Easy Mode</button>
-                        </div>
-
-                        <div class="mode-card" data-mode="normal">
-                            <h3>Normal Mode</h3>
-                            <div class="mode-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Chapters per day:</span>
-                                    <span class="stat-value">2</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Study duration:</span>
-                                    <span class="stat-value" id="normalDuration">- days</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Daily workload:</span>
-                                    <span class="stat-value">Moderate</span>
-                                </div>
-                            </div>
-                            <p class="mode-description">Balanced approach with steady progress</p>
-                            <button class="btn btn--outline mode-select" data-mode="normal">Select Normal Mode</button>
-                        </div>
-
-                        <div class="mode-card" data-mode="intense">
-                            <h3>Intense Mode</h3>
-                            <div class="mode-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Chapters per day:</span>
-                                    <span class="stat-value" id="intenseChapters">4+</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Study duration:</span>
-                                    <span class="stat-value">7 days</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Daily workload:</span>
-                                    <span class="stat-value">Heavy</span>
-                                </div>
-                            </div>
-                            <p class="mode-description">Last-minute preparation with high intensity</p>
-                            <button class="btn btn--outline mode-select" data-mode="intense">Select Intense Mode</button>
-                        </div>
-                    </div>
-
-                    <div id="selectedModeDetails" class="selected-mode-details hidden">
-                        <h3>Selected Mode Details</h3>
-                        <div id="modeBreakdown" class="mode-breakdown"></div>
-                    </div>
-                </div>
+      <section id="cgpa-calculator" class="tab-content" role="tabpanel" aria-labelledby="tab-cgpa-calculator" aria-hidden="true">
+        <article class="card">
+          <header class="card__header">
+            <h2>CGPA Target Calculator</h2>
+            <p>Calculate marks needed to achieve 9.0 CGPA target</p>
+          </header>
+          <div class="card__body">
+            <div class="subject-selector">
+              <label class="form-label" for="subject-select">Select Subject</label>
+              <select id="subject-select" class="form-control"></select>
             </div>
-        </section>
-    </div>
 
-    <!-- Add Material Modal -->
-<!--     <div id="addMaterialModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Add Study Material</h3>
-                <button class="modal-close">&times;</button>
+            <div class="marks-input-grid">
+              <div class="form-group">
+                <label class="form-label" for="class-test-1">Class Test 1 (10 marks)</label>
+                <input type="number" id="class-test-1" class="form-control" min="0" max="10">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="class-test-2">Class Test 2 (10 marks)</label>
+                <input type="number" id="class-test-2" class="form-control" min="0" max="10">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="assignment-score">Assignment (10 marks)</label>
+                <input type="number" id="assignment-score" class="form-control" min="0" max="10">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="mid-semester">Mid Semester (20 marks)</label>
+                <input type="number" id="mid-semester" class="form-control" min="0" max="20">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="end-semester">End Semester (60 marks)</label>
+                <input type="number" id="end-semester" class="form-control" min="0" max="60">
+              </div>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Subject</label>
-                    <select id="materialSubject" class="form-control">
-                        <!-- Options populated by JS -->
-                    </select>
+
+            <button id="calculate-cgpa" class="btn btn--primary" type="button">Calculate CGPA</button>
+
+            <div id="cgpa-results" class="cgpa-results hidden" aria-live="polite" aria-hidden="true">
+              <div class="results-grid">
+                <div class="result-card">
+                  <h4>Current Score</h4>
+                  <output class="score" id="current-score" for="class-test-1 class-test-2 assignment-score mid-semester end-semester">0/100</output>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Chapter</label>
-                    <select id="materialChapter" class="form-control">
-                        <!-- Options populated by JS -->
-                    </select>
+                <div class="result-card">
+                  <h4>Current Grade</h4>
+                  <output class="grade" id="current-grade">-</output>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Material Name</label>
-                    <input type="text" id="materialName" class="form-control" placeholder="e.g., Lecture Notes, Textbook PDF">
+                <div class="result-card">
+                  <h4>Required for 9.0 CGPA</h4>
+                  <output class="requirement" id="requirement">-</output>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Material Type</label>
-                    <select id="materialType" class="form-control">
-                        <option value="pdf">PDF Document</option>
-                        <option value="ppt">PowerPoint Presentation</option>
-                        <option value="notes">Handwritten Notes</option>
-                        <option value="video">Video Lecture</option>
-                        <option value="other">Other</option>
-                    </select>
+                <div class="result-card">
+                  <h4>Overall CGPA</h4>
+                  <output class="cgpa" id="overall-cgpa">0.0</output>
                 </div>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn--secondary" id="cancelMaterial">Cancel</button>
-                <button class="btn btn--primary" id="saveMaterial">Add Material</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="performance-modes" class="tab-content" role="tabpanel" aria-labelledby="tab-performance-modes" aria-hidden="true">
+        <article class="card">
+          <header class="card__header">
+            <h2>Performance Modes Comparison</h2>
+            <p>Compare different study approaches and select your preferred method</p>
+          </header>
+          <div class="card__body">
+            <div class="modes-grid">
+              <article class="mode-card" data-mode="easy">
+                <h3>Easy Mode</h3>
+                <dl class="mode-stats">
+                  <div class="stat">
+                    <dt class="stat-label">Chapters per day</dt>
+                    <dd class="stat-value">1</dd>
+                  </div>
+                  <div class="stat">
+                    <dt class="stat-label">Study duration</dt>
+                    <dd class="stat-value" id="easy-duration">- days</dd>
+                  </div>
+                  <div class="stat">
+                    <dt class="stat-label">Daily workload</dt>
+                    <dd class="stat-value">Light</dd>
+                  </div>
+                </dl>
+                <p class="mode-description">Relaxed pace with plenty of time for revision</p>
+                <button class="btn btn--outline mode-select" type="button" data-mode="easy">Select Easy Mode</button>
+              </article>
+
+              <article class="mode-card" data-mode="normal">
+                <h3>Normal Mode</h3>
+                <dl class="mode-stats">
+                  <div class="stat">
+                    <dt class="stat-label">Chapters per day</dt>
+                    <dd class="stat-value">2</dd>
+                  </div>
+                  <div class="stat">
+                    <dt class="stat-label">Study duration</dt>
+                    <dd class="stat-value" id="normal-duration">- days</dd>
+                  </div>
+                  <div class="stat">
+                    <dt class="stat-label">Daily workload</dt>
+                    <dd class="stat-value">Moderate</dd>
+                  </div>
+                </dl>
+                <p class="mode-description">Balanced approach with steady progress</p>
+                <button class="btn btn--outline mode-select" type="button" data-mode="normal">Select Normal Mode</button>
+              </article>
+
+              <article class="mode-card" data-mode="intense">
+                <h3>Intense Mode</h3>
+                <dl class="mode-stats">
+                  <div class="stat">
+                    <dt class="stat-label">Chapters per day</dt>
+                    <dd class="stat-value" id="intense-chapters">4+</dd>
+                  </div>
+                  <div class="stat">
+                    <dt class="stat-label">Study duration</dt>
+                    <dd class="stat-value">7 days</dd>
+                  </div>
+                  <div class="stat">
+                    <dt class="stat-label">Daily workload</dt>
+                    <dd class="stat-value">Heavy</dd>
+                  </div>
+                </dl>
+                <p class="mode-description">Last-minute preparation with high intensity</p>
+                <button class="btn btn--outline mode-select" type="button" data-mode="intense">Select Intense Mode</button>
+              </article>
             </div>
-        </div>
-    </div>
- -->
-    <script src="app.js"></script>
+
+            <div id="selected-mode-details" class="selected-mode-details hidden" aria-live="polite" aria-hidden="true">
+              <h3>Selected Mode Details</h3>
+              <div id="mode-breakdown" class="mode-breakdown"></div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
