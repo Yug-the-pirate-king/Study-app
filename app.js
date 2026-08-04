@@ -4,12 +4,11 @@ const subjects = {
     credits: 3,
     chapters: [
       "Laplace Transforms",
-      "Fourier Series", 
+      "Fourier Series",
       "Partial Differential Equations",
       "Z-Transforms",
       "Functions of Complex Variables"
     ],
-
     totalChapters: 5
   },
   "Data Structures": {
@@ -17,7 +16,7 @@ const subjects = {
     chapters: [
       "Data, Data types, Arrays and Hash Tables",
       "Stacks and Queues",
-      "Linked Lists", 
+      "Linked Lists",
       "Trees and Graphs",
       "Searching and Sorting"
     ],
@@ -29,7 +28,7 @@ const subjects = {
       "Propositional Logic and Predicates",
       "Set Theory, Functions and Relations",
       "Combinatorics",
-      "Graph Theory and Trees", 
+      "Graph Theory and Trees",
       "Algebraic Structures"
     ],
     totalChapters: 5
@@ -69,28 +68,26 @@ const subjects = {
 };
 
 const gradeScale = {
-  "EX": {min: 91, points: 10},
-  "AA`": {min: 86, points: 9},
-  "AB": {min: 81, points: 8},
-  "BB": {min: 76, points: 7},
-  "BC": {min: 71, points: 6},
-  "CC": {min: 66, points: 5},
-  "CD": {min: 61, points: 4},
-  "DD": {min: 56, points: 0},
-  "DE": {min: 51, points: 0},
-  "EE": {min: 40, points: 0},
-  "EF": {min: 0, points: 0},
+  "EX": { min: 91, points: 10 },
+  "AA": { min: 86, points: 9 },
+  "AB": { min: 81, points: 8 },
+  "BB": { min: 76, points: 7 },
+  "BC": { min: 71, points: 6 },
+  "CC": { min: 66, points: 5 },
+  "CD": { min: 61, points: 4 },
+  "DD": { min: 56, points: 0 },
+  "DE": { min: 51, points: 0 },
+  "EE": { min: 40, points: 0 },
+  "EF": { min: 0, points: 0 }
 };
 
 // Global state
 let studyPlan = [];
 let folderStructure = {};
 let subjectMarks = {};
-let studyProgress = {};
 
 // Initialize application
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('App initializing...');
+document.addEventListener('DOMContentLoaded', function () {
   initializeApp();
   setupEventListeners();
   populateSubjectSelectors();
@@ -98,108 +95,94 @@ document.addEventListener('DOMContentLoaded', function() {
   calculateModeDurations();
 });
 
+function formatDateLocal(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 function initializeApp() {
-  console.log('Setting up initial data...');
-  // Set default dates
   const today = new Date();
   const startDate = new Date(today);
-  startDate.setDate(today.getDate() + 7); // Start next week
-  
+  startDate.setDate(today.getDate() + 7);
   const examDate = new Date(today);
-  examDate.setDate(today.getDate() + 90); // Exam in 3 months
-  
+  examDate.setDate(today.getDate() + 90);
+
   const startDateInput = document.getElementById('startDate');
   const examDateInput = document.getElementById('examDate');
-  
-  if (startDateInput && examDateInput) {
-    startDateInput.value = startDate.toISOString().split('T')[0];
-    examDateInput.value = examDate.toISOString().split('T')[0];
-  }
-  
-  // Initialize subject marks
+
+  if (startDateInput) startDateInput.value = formatDateLocal(startDate);
+  if (examDateInput) examDateInput.value = formatDateLocal(examDate);
+
   Object.keys(subjects).forEach(subject => {
     subjectMarks[subject] = {
-      ct1: 0, ct2: 0, assignment: 0, midSem: 0, endSem: 0
+      ct1: 0,
+      ct2: 0,
+      assignment: 0,
+      midSem: 0,
+      endSem: 0
     };
-    studyProgress[subject] = {};
-    subjects[subject].chapters.forEach((chapter, index) => {
-      studyProgress[subject][index] = false;
-    });
   });
 }
 
 function setupEventListeners() {
-  console.log('Setting up event listeners...');
-  
-  // Tab navigation - Fixed implementation
   document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.addEventListener('click', function(e) {
+    tab.addEventListener('click', function (e) {
       e.preventDefault();
-      const targetTab = this.dataset.tab;
-      console.log('Tab clicked:', targetTab);
-      switchTab(targetTab);
+      switchTab(this.dataset.tab);
     });
   });
-  
-  // Study plan generator
+
   const generateBtn = document.getElementById('generatePlan');
   if (generateBtn) {
-    generateBtn.addEventListener('click', function(e) {
+    generateBtn.addEventListener('click', function (e) {
       e.preventDefault();
-      console.log('Generate plan clicked');
       generateStudyPlan();
     });
   }
-  
-  // Folder manager
+
   const addMaterialBtn = document.getElementById('addMaterial');
   if (addMaterialBtn) {
-    addMaterialBtn.addEventListener('click', function(e) {
+    addMaterialBtn.addEventListener('click', function (e) {
       e.preventDefault();
       showAddMaterialModal();
     });
   }
-  
+
   const searchInput = document.getElementById('searchMaterials');
   if (searchInput) {
     searchInput.addEventListener('input', searchMaterials);
   }
-  
-  // CGPA calculator
+
   const calculateBtn = document.getElementById('calculateCGPA');
   if (calculateBtn) {
-    calculateBtn.addEventListener('click', function(e) {
+    calculateBtn.addEventListener('click', function (e) {
       e.preventDefault();
-      console.log('Calculate CGPA clicked');
       calculateCGPA();
     });
   }
-  
+
   const subjectSelect = document.getElementById('subjectSelect');
   if (subjectSelect) {
     subjectSelect.addEventListener('change', loadSubjectMarks);
   }
-  
-  // Performance modes
-  document.querySelectorAll('.mode-select').forEach(btn => {
-    btn.addEventListener('click', function(e) {
+
+  document.querySelectorAll('[data-mode]').forEach(btn => {
+    btn.addEventListener('click', function (e) {
       e.preventDefault();
-      const mode = this.dataset.mode;
-      console.log('Mode selected:', mode);
-      selectPerformanceMode(mode);
+      selectPerformanceMode(this.dataset.mode);
     });
   });
-  
-  // Modal controls
+
   const cancelBtn = document.getElementById('cancelMaterial');
   const saveBtn = document.getElementById('saveMaterial');
   const closeBtn = document.querySelector('.modal-close');
-  
-  if (cancelBtn) cancelBtn.addEventListener('click', function(e) { e.preventDefault(); hideAddMaterialModal(); });
-  if (saveBtn) saveBtn.addEventListener('click', function(e) { e.preventDefault(); saveMaterial(); });
-  if (closeBtn) closeBtn.addEventListener('click', function(e) { e.preventDefault(); hideAddMaterialModal(); });
-  
-  // Material subject change
+
+  if (cancelBtn) cancelBtn.addEventListener('click', hideAddMaterialModal);
+  if (saveBtn) saveBtn.addEventListener('click', saveMaterial);
+  if (closeBtn) closeBtn.addEventListener('click', hideAddMaterialModal);
+
   const materialSubject = document.getElementById('materialSubject');
   if (materialSubject) {
     materialSubject.addEventListener('change', updateMaterialChapters);
@@ -207,61 +190,56 @@ function setupEventListeners() {
 }
 
 function switchTab(tabId) {
-  console.log('Switching to tab:', tabId);
-  
-  // Update tab buttons
-  document.querySelectorAll('.nav-tab').forEach(tab => {
-    tab.classList.remove('active');
-  });
+  if (!tabId) return;
+
+  document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
   const activeTab = document.querySelector(`[data-tab="${tabId}"]`);
-  if (activeTab) {
-    activeTab.classList.add('active');
-  }
-  
-  // Update content - Hide all first
+  if (activeTab) activeTab.classList.add('active');
+
   document.querySelectorAll('.tab-content').forEach(content => {
     content.classList.remove('active');
     content.style.display = 'none';
   });
-  
-  // Show selected content
+
   const targetContent = document.getElementById(tabId);
   if (targetContent) {
     targetContent.classList.add('active');
     targetContent.style.display = 'block';
-    console.log('Tab switched successfully to:', tabId);
-  } else {
-    console.error('Target content not found:', tabId);
   }
 }
 
 // SECTION 1: Study Plan Generator
 function generateStudyPlan() {
-  console.log('Generating study plan...');
-  
   const modeSelect = document.getElementById('studyMode');
   const startDateInput = document.getElementById('startDate');
   const examDateInput = document.getElementById('examDate');
-  
+
   if (!modeSelect || !startDateInput || !examDateInput) {
-    console.error('Required elements not found');
     return;
   }
-  
+
   const mode = modeSelect.value;
   const startDate = new Date(startDateInput.value);
   const examDate = new Date(examDateInput.value);
-  
-  console.log('Mode:', mode, 'Start:', startDate, 'Exam:', examDate);
-  
-  if (!startDateInput.value || !examDateInput.value || examDate <= startDate) {
+
+  if (!startDateInput.value || !examDateInput.value || isNaN(startDate) || isNaN(examDate)) {
     alert('Please select valid start and exam dates');
     return;
   }
-  
+
+  if (examDate <= startDate) {
+    alert('Exam date must be after start date');
+    return;
+  }
+
+  if (!['intense', 'easy', 'normal'].includes(mode)) {
+    alert('Please select a valid study mode');
+    return;
+  }
+
   studyPlan = createStudyPlan(mode, startDate, examDate);
   displayStudyPlan();
-  
+
   const output = document.getElementById('studyPlanOutput');
   if (output) {
     output.classList.remove('hidden');
@@ -270,28 +248,26 @@ function generateStudyPlan() {
 }
 
 function createStudyPlan(mode, startDate, examDate) {
-  console.log('Creating study plan for mode:', mode);
   const plan = [];
   const subjectList = Object.entries(subjects).sort((a, b) => b[1].credits - a[1].credits);
-  
+
   if (mode === 'intense') {
-    // 7-day crash course
     const intenseDays = 7;
-    const totalChapters = subjectList.reduce((sum, [, subject]) => sum + subject.totalChapters, 0);
-    const chaptersPerDay = Math.ceil(totalChapters / intenseDays);
-    
+    const totalChapters = subjectList.reduce((sum, [, subject]) => sum + subject.chapters.length, 0);
+    const chaptersPerDay = Math.ceil(totalChapters / intenseDays) || 1;
+
     let currentDate = new Date(examDate);
     currentDate.setDate(currentDate.getDate() - intenseDays);
-    
+
     let chapterIndex = 0;
     let currentSubjectIndex = 0;
-    
+
     for (let day = 0; day < intenseDays; day++) {
       const dayPlan = {
         date: new Date(currentDate),
         subjects: []
       };
-      
+
       let chaptersToday = 0;
       while (chaptersToday < chaptersPerDay && currentSubjectIndex < subjectList.length) {
         const [subjectName, subject] = subjectList[currentSubjectIndex];
@@ -304,28 +280,29 @@ function createStudyPlan(mode, startDate, examDate) {
           chapterIndex++;
           chaptersToday++;
         }
-        
+
         if (chapterIndex >= subject.chapters.length) {
           currentSubjectIndex++;
           chapterIndex = 0;
         }
       }
-      
+
       if (dayPlan.subjects.length > 0) {
         plan.push(dayPlan);
       }
-      
+
       currentDate.setDate(currentDate.getDate() + 1);
     }
   } else {
-    // Easy or Normal mode
     const chaptersPerDay = mode === 'easy' ? 1 : 2;
-    const daysBetween = Math.ceil((examDate - startDate) / (1000 * 60 * 60 * 24));
-    
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const daysBetween = Math.ceil((examDate - startDate) / msPerDay);
+
+    if (daysBetween <= 0) return plan;
+
     let currentDate = new Date(startDate);
-    let allChapters = [];
-    
-    // Create weighted chapter list
+    const allChapters = [];
+
     subjectList.forEach(([subjectName, subject]) => {
       subject.chapters.forEach(chapter => {
         allChapters.push({
@@ -335,68 +312,90 @@ function createStudyPlan(mode, startDate, examDate) {
         });
       });
     });
-    
-    // Distribute chapters across available days
+
     for (let day = 0; day < daysBetween && allChapters.length > 0; day++) {
       const dayPlan = {
         date: new Date(currentDate),
         subjects: []
       };
-      
+
       for (let i = 0; i < chaptersPerDay && allChapters.length > 0; i++) {
         dayPlan.subjects.push(allChapters.shift());
       }
-      
+
       if (dayPlan.subjects.length > 0) {
         plan.push(dayPlan);
       }
-      
+
       currentDate.setDate(currentDate.getDate() + 1);
     }
   }
-  
+
   return plan;
 }
 
 function displayStudyPlan() {
   const planDetails = document.getElementById('planDetails');
   if (!planDetails) return;
-  
+
   planDetails.innerHTML = '';
-  
+
   studyPlan.forEach((day, index) => {
     const dayElement = document.createElement('div');
     dayElement.className = 'plan-day';
-    dayElement.innerHTML = `
-      <input type="checkbox" id="day-${index}" onchange="updateProgress(${index})">
-      <div class="plan-day-info">
-        <div class="plan-date">${day.date.toLocaleDateString('en-US', { 
-          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-        })}</div>
-        <div class="plan-subjects">
-          ${day.subjects.map(s => `
-            <span class="status-badge status-badge--${s.priority}-priority">${s.subject}</span>
-            ${s.chapter}
-          `).join(' • ')}
-        </div>
-      </div>
-    `;
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = `day-${index}`;
+    checkbox.addEventListener('change', () => updateProgress(index));
+
+    const info = document.createElement('div');
+    info.className = 'plan-day-info';
+
+    const dateDiv = document.createElement('div');
+    dateDiv.className = 'plan-date';
+    dateDiv.textContent = day.date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const subjectsDiv = document.createElement('div');
+    subjectsDiv.className = 'plan-subjects';
+
+    day.subjects.forEach((s, i) => {
+      const badge = document.createElement('span');
+      badge.className = `status-badge status-badge--${s.priority}-priority`;
+      badge.textContent = s.subject;
+
+      subjectsDiv.appendChild(badge);
+      subjectsDiv.append(` ${s.chapter}`);
+
+      if (i < day.subjects.length - 1) {
+        subjectsDiv.append(' • ');
+      }
+    });
+
+    info.appendChild(dateDiv);
+    info.appendChild(subjectsDiv);
+    dayElement.appendChild(checkbox);
+    dayElement.appendChild(info);
     planDetails.appendChild(dayElement);
   });
-  
+
   updateProgressDisplay();
 }
 
 function updateProgress(dayIndex) {
   const checkbox = document.getElementById(`day-${dayIndex}`);
+  if (!checkbox) return;
+
   const dayElement = checkbox.closest('.plan-day');
-  
-  if (checkbox.checked) {
-    dayElement.classList.add('completed');
-  } else {
-    dayElement.classList.remove('completed');
+  if (dayElement) {
+    dayElement.classList.toggle('completed', checkbox.checked);
   }
-  
+
   updateProgressDisplay();
 }
 
@@ -404,10 +403,10 @@ function updateProgressDisplay() {
   const completedDays = document.querySelectorAll('.plan-day input:checked').length;
   const totalDays = studyPlan.length;
   const progress = totalDays > 0 ? (completedDays / totalDays) * 100 : 0;
-  
+
   const progressFill = document.getElementById('overallProgress');
   const progressText = document.getElementById('progressText');
-  
+
   if (progressFill) progressFill.style.width = `${progress}%`;
   if (progressText) progressText.textContent = `${Math.round(progress)}% Complete`;
 }
@@ -420,7 +419,7 @@ function initializeFolderStructure() {
       chapters: {},
       materials: []
     };
-    
+
     subjects[subjectName].chapters.forEach((chapter, index) => {
       folderStructure[subjectName].chapters[index] = {
         name: chapter,
@@ -428,109 +427,153 @@ function initializeFolderStructure() {
       };
     });
   });
-  
+
   renderFolderStructure();
 }
 
 function renderFolderStructure() {
   const container = document.getElementById('folderStructure');
   if (!container) return;
-  
+
   container.innerHTML = '';
-  
+
   Object.entries(folderStructure).forEach(([subjectName, subjectData]) => {
+    const chapterMaterials = Object.values(subjectData.chapters).reduce(
+      (sum, chapter) => sum + chapter.materials.length,
+      0
+    );
+    const totalMaterials = subjectData.materials.length + chapterMaterials;
+
     const subjectFolder = document.createElement('div');
     subjectFolder.className = 'folder-item';
-    
-    const totalMaterials = subjectData.materials.length + 
-      Object.values(subjectData.chapters).reduce((sum, chapter) => sum + chapter.materials.length, 0);
-    
-    subjectFolder.innerHTML = `
-      <div class="folder-header" onclick="toggleFolder('${subjectName}')">
-        <span class="folder-icon">📁</span>
-        <span class="folder-name">${subjectName}</span>
-        <span class="material-count">(${totalMaterials} materials)</span>
-      </div>
-      <div class="folder-children" id="folder-${subjectName}">
-        ${Object.entries(subjectData.chapters).map(([chapterIndex, chapter]) => `
-          <div class="folder-item">
-            <div class="folder-header" onclick="toggleChapter('${subjectName}', ${chapterIndex})">
-              <span class="folder-icon">📄</span>
-              <span class="folder-name">${chapter.name}</span>
-              <span class="material-count">(${chapter.materials.length} materials)</span>
-            </div>
-            <div class="folder-children" id="chapter-${subjectName}-${chapterIndex}">
-              ${chapter.materials.map((material, materialIndex) => `
-                <div class="material-item">
-                  <span class="material-type">${material.type}</span>
-                  <span class="material-name">${material.name}</span>
-                  <div class="material-actions">
-                    <button onclick="removeMaterial('${subjectName}', ${chapterIndex}, ${materialIndex})">✕</button>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `).join('')}
-        ${subjectData.materials.map((material, materialIndex) => `
-          <div class="material-item">
-            <span class="material-type">${material.type}</span>
-            <span class="material-name">${material.name}</span>
-            <div class="material-actions">
-              <button onclick="removeMaterial('${subjectName}', null, ${materialIndex})">✕</button>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-    
+
+    const subjectHeader = createFolderHeader('📁', subjectName, totalMaterials, () => {
+      toggleFolder(subjectName);
+    });
+    subjectFolder.appendChild(subjectHeader);
+
+    const subjectChildren = document.createElement('div');
+    subjectChildren.className = 'folder-children';
+    subjectChildren.id = `folder-${subjectName}`;
+
+    Object.entries(subjectData.chapters).forEach(([chapterIndex, chapter]) => {
+      const chapterFolder = document.createElement('div');
+      chapterFolder.className = 'folder-item';
+
+      const chapterHeader = createFolderHeader('📄', chapter.name, chapter.materials.length, () => {
+        toggleChapter(subjectName, Number(chapterIndex));
+      });
+      chapterFolder.appendChild(chapterHeader);
+
+      const chapterChildren = document.createElement('div');
+      chapterChildren.className = 'folder-children';
+      chapterChildren.id = `chapter-${subjectName}-${chapterIndex}`;
+
+      chapter.materials.forEach((material, materialIndex) => {
+        chapterChildren.appendChild(
+          createMaterialItem(material, subjectName, Number(chapterIndex), materialIndex)
+        );
+      });
+
+      chapterFolder.appendChild(chapterChildren);
+      subjectChildren.appendChild(chapterFolder);
+    });
+
+    subjectData.materials.forEach((material, materialIndex) => {
+      subjectChildren.appendChild(createMaterialItem(material, subjectName, null, materialIndex));
+    });
+
+    subjectFolder.appendChild(subjectChildren);
     container.appendChild(subjectFolder);
   });
 }
 
+function createFolderHeader(icon, name, count, clickHandler) {
+  const header = document.createElement('div');
+  header.className = 'folder-header';
+
+  const iconSpan = document.createElement('span');
+  iconSpan.className = 'folder-icon';
+  iconSpan.textContent = icon;
+
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'folder-name';
+  nameSpan.textContent = name;
+
+  const countSpan = document.createElement('span');
+  countSpan.className = 'material-count';
+  countSpan.textContent = `(${count} materials)`;
+
+  header.append(iconSpan, nameSpan, countSpan);
+  if (typeof clickHandler === 'function') {
+    header.addEventListener('click', clickHandler);
+  }
+  return header;
+}
+
+function createMaterialItem(material, subjectName, chapterIndex, materialIndex) {
+  const item = document.createElement('div');
+  item.className = 'material-item';
+
+  const typeSpan = document.createElement('span');
+  typeSpan.className = 'material-type';
+  typeSpan.textContent = material.type;
+
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'material-name';
+  nameSpan.textContent = material.name;
+
+  const actions = document.createElement('div');
+  actions.className = 'material-actions';
+
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = '✕';
+  removeBtn.addEventListener('click', () => removeMaterial(subjectName, chapterIndex, materialIndex));
+
+  actions.appendChild(removeBtn);
+  item.append(typeSpan, nameSpan, actions);
+  return item;
+}
+
 function toggleFolder(subjectName) {
   const folder = document.getElementById(`folder-${subjectName}`);
-  if (folder) {
-    folder.style.display = folder.style.display === 'none' ? 'block' : 'none';
-  }
+  if (!folder) return;
+  folder.style.display = folder.style.display === 'none' ? 'block' : 'none';
 }
 
 function toggleChapter(subjectName, chapterIndex) {
   const chapter = document.getElementById(`chapter-${subjectName}-${chapterIndex}`);
-  if (chapter) {
-    chapter.style.display = chapter.style.display === 'none' ? 'block' : 'none';
-  }
+  if (!chapter) return;
+  chapter.style.display = chapter.style.display === 'none' ? 'block' : 'none';
 }
 
 function showAddMaterialModal() {
   const modal = document.getElementById('addMaterialModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-  }
+  if (modal) modal.classList.remove('hidden');
 }
 
 function hideAddMaterialModal() {
   const modal = document.getElementById('addMaterialModal');
-  if (modal) {
-    modal.classList.add('hidden');
-  }
-  // Clear form
+  if (modal) modal.classList.add('hidden');
+
   const materialName = document.getElementById('materialName');
   const materialType = document.getElementById('materialType');
+  const materialChapter = document.getElementById('materialChapter');
+
   if (materialName) materialName.value = '';
   if (materialType) materialType.value = 'pdf';
+  if (materialChapter) materialChapter.value = '';
 }
 
 function updateMaterialChapters() {
   const subjectSelect = document.getElementById('materialSubject');
   const chapterSelect = document.getElementById('materialChapter');
-  
+
   if (!subjectSelect || !chapterSelect) return;
-  
-  const selectedSubject = subjectSelect.value;
-  
+
   chapterSelect.innerHTML = '<option value="">Select Chapter (Optional)</option>';
-  
+
+  const selectedSubject = subjectSelect.value;
   if (selectedSubject && subjects[selectedSubject]) {
     subjects[selectedSubject].chapters.forEach((chapter, index) => {
       const option = document.createElement('option');
@@ -542,53 +585,81 @@ function updateMaterialChapters() {
 }
 
 function saveMaterial() {
-  const subjectName = document.getElementById('materialSubject').value;
-  const chapterIndex = document.getElementById('materialChapter').value;
-  const materialName = document.getElementById('materialName').value;
-  const materialType = document.getElementById('materialType').value;
-  
-  if (!subjectName || !materialName) {
-    alert('Please fill in all required fields');
+  const subjectSelect = document.getElementById('materialSubject');
+  const chapterSelect = document.getElementById('materialChapter');
+  const nameInput = document.getElementById('materialName');
+  const typeInput = document.getElementById('materialType');
+
+  if (!subjectSelect || !nameInput) {
+    alert('Required form elements are missing');
     return;
   }
-  
+
+  const subjectName = subjectSelect.value.trim();
+  const materialName = nameInput.value.trim();
+  const materialType = typeInput ? typeInput.value : 'pdf';
+  const chapterIndex = chapterSelect ? chapterSelect.value : '';
+
+  if (!subjectName || !folderStructure[subjectName]) {
+    alert('Please select a valid subject');
+    return;
+  }
+
+  if (!materialName) {
+    alert('Please enter a material name');
+    return;
+  }
+
   const material = {
     name: materialName,
     type: materialType,
     dateAdded: new Date().toLocaleDateString()
   };
-  
+
   if (chapterIndex !== '') {
-    folderStructure[subjectName].chapters[chapterIndex].materials.push(material);
+    const idx = Number(chapterIndex);
+    if (!folderStructure[subjectName].chapters[idx]) {
+      alert('Invalid chapter selected');
+      return;
+    }
+    folderStructure[subjectName].chapters[idx].materials.push(material);
   } else {
     folderStructure[subjectName].materials.push(material);
   }
-  
+
   renderFolderStructure();
   hideAddMaterialModal();
 }
 
 function removeMaterial(subjectName, chapterIndex, materialIndex) {
-  if (chapterIndex !== null) {
-    folderStructure[subjectName].chapters[chapterIndex].materials.splice(materialIndex, 1);
+  const subject = folderStructure[subjectName];
+  if (!subject) return;
+
+  if (chapterIndex !== null && chapterIndex !== undefined && chapterIndex !== '') {
+    const chapter = subject.chapters[chapterIndex];
+    if (!chapter || materialIndex < 0 || materialIndex >= chapter.materials.length) return;
+    chapter.materials.splice(materialIndex, 1);
   } else {
-    folderStructure[subjectName].materials.splice(materialIndex, 1);
+    if (materialIndex < 0 || materialIndex >= subject.materials.length) return;
+    subject.materials.splice(materialIndex, 1);
   }
-  
+
   renderFolderStructure();
 }
 
 function searchMaterials() {
-  const searchTerm = document.getElementById('searchMaterials').value.toLowerCase();
+  const searchInput = document.getElementById('searchMaterials');
+  if (!searchInput) return;
+
+  const searchTerm = searchInput.value.toLowerCase();
   const materials = document.querySelectorAll('.material-item');
-  
+
   materials.forEach(material => {
     const materialName = material.querySelector('.material-name');
-    if (materialName && materialName.textContent.toLowerCase().includes(searchTerm)) {
-      material.style.display = 'flex';
-    } else {
-      material.style.display = 'none';
-    }
+    if (!materialName) return;
+
+    const matches = materialName.textContent.toLowerCase().includes(searchTerm);
+    material.style.display = matches ? 'flex' : 'none';
   });
 }
 
@@ -596,7 +667,7 @@ function searchMaterials() {
 function populateSubjectSelectors() {
   const subjectSelect = document.getElementById('subjectSelect');
   const materialSubjectSelect = document.getElementById('materialSubject');
-  
+
   if (subjectSelect) {
     Object.keys(subjects).forEach(subject => {
       const option = document.createElement('option');
@@ -604,14 +675,14 @@ function populateSubjectSelectors() {
       option.textContent = subject;
       subjectSelect.appendChild(option);
     });
-    
-    // Load first subject by default
-    if (Object.keys(subjects).length > 0) {
-      subjectSelect.value = Object.keys(subjects)[0];
+
+    const firstSubject = Object.keys(subjects)[0];
+    if (firstSubject) {
+      subjectSelect.value = firstSubject;
       loadSubjectMarks();
     }
   }
-  
+
   if (materialSubjectSelect) {
     Object.keys(subjects).forEach(subject => {
       const option = document.createElement('option');
@@ -625,79 +696,92 @@ function populateSubjectSelectors() {
 function loadSubjectMarks() {
   const subjectSelect = document.getElementById('subjectSelect');
   if (!subjectSelect) return;
-  
+
   const subject = subjectSelect.value;
-  const marks = subjectMarks[subject];
-  
-  if (marks) {
-    const ct1 = document.getElementById('ct1');
-    const ct2 = document.getElementById('ct2');
-    const assignment = document.getElementById('assignment');
-    const midSem = document.getElementById('midSem');
-    const endSem = document.getElementById('endSem');
-    
-    if (ct1) ct1.value = marks.ct1;
-    if (ct2) ct2.value = marks.ct2;
-    if (assignment) assignment.value = marks.assignment;
-    if (midSem) midSem.value = marks.midSem;
-    if (endSem) endSem.value = marks.endSem;
+  let marks = subjectMarks[subject];
+
+  if (!marks) {
+    marks = { ct1: 0, ct2: 0, assignment: 0, midSem: 0, endSem: 0 };
+    subjectMarks[subject] = marks;
   }
+
+  setInputValue('ct1', marks.ct1);
+  setInputValue('ct2', marks.ct2);
+  setInputValue('assignment', marks.assignment);
+  setInputValue('midSem', marks.midSem);
+  setInputValue('endSem', marks.endSem);
+}
+
+function setInputValue(id, value) {
+  const input = document.getElementById(id);
+  if (input) input.value = value;
+}
+
+function getMark(id) {
+  const input = document.getElementById(id);
+  if (!input) return 0;
+
+  const value = parseFloat(input.value);
+  if (isNaN(value)) return 0;
+  return Math.max(0, value);
+}
+
+function calculateGradePoints(percentage) {
+  for (const gradeData of Object.values(gradeScale)) {
+    if (percentage >= gradeData.min) {
+      return gradeData.points;
+    }
+  }
+  return 0;
 }
 
 function calculateCGPA() {
   const subjectSelect = document.getElementById('subjectSelect');
   if (!subjectSelect) return;
-  
+
   const subject = subjectSelect.value;
-  const ct1 = parseFloat(document.getElementById('ct1').value) || 0;
-  const ct2 = parseFloat(document.getElementById('ct2').value) || 0;
-  const assignment = parseFloat(document.getElementById('assignment').value) || 0;
-  const midSem = parseFloat(document.getElementById('midSem').value) || 0;
-  const endSem = parseFloat(document.getElementById('endSem').value) || 0;
-  
-  // Save marks
+  const ct1 = getMark('ct1');
+  const ct2 = getMark('ct2');
+  const assignment = getMark('assignment');
+  const midSem = getMark('midSem');
+  const endSem = getMark('endSem');
+
   subjectMarks[subject] = { ct1, ct2, assignment, midSem, endSem };
-  
-  // Calculate best 2 of 3 from CT1, CT2, Assignment
+
   const caScores = [ct1, ct2, assignment].sort((a, b) => b - a);
-  const caTotal = caScores[0] + caScores[1]; // Best 2 scores
-  
+  const caTotal = caScores[0] + caScores[1];
   const totalScore = caTotal + midSem + endSem;
-  const percentage = (totalScore / 100) * 100;
-  
-  // Determine grade
+  const percentage = totalScore;
+
+  const gradePoints = calculateGradePoints(percentage);
   let grade = 'F';
-  let gradePoints = 0;
-  
   for (const [gradeName, gradeData] of Object.entries(gradeScale)) {
     if (percentage >= gradeData.min) {
       grade = gradeName;
-      gradePoints = gradeData.points;
       break;
     }
   }
-  
-  // Calculate required marks for 9.0 CGPA (A grade = 90%)
-  const requiredTotal = 90; // 90% for A grade (9 points)
+
+  const requiredTotal = 90;
   const currentPartial = caTotal + midSem;
-  const requiredEndSem = Math.max(0, requiredTotal - currentPartial);
-  
-  // Calculate overall CGPA
-  const overallCGPA = calculateOverallCGPA();
-  
-  // Display results
-  const currentScore = document.getElementById('currentScore');
-  const currentGrade = document.getElementById('currentGrade');
-  const requirement = document.getElementById('requirement');
-  const overallCGPAElement = document.getElementById('overallCGPA');
-  
-  if (currentScore) currentScore.textContent = `${Math.round(totalScore)}/100`;
-  if (currentGrade) currentGrade.textContent = `${grade} (${gradePoints} points)`;
-  if (requirement) {
-    requirement.textContent = requiredEndSem <= 60 ? `${Math.round(requiredEndSem)}/60 in End Sem` : 'Target not achievable';
+  let requirementText;
+
+  if (currentPartial >= requiredTotal) {
+    requirementText = 'Target already achieved';
+  } else {
+    const requiredEndSem = requiredTotal - currentPartial;
+    requirementText = requiredEndSem <= 60
+      ? `${Math.round(requiredEndSem)}/60 in End Sem`
+      : 'Target not achievable';
   }
-  if (overallCGPAElement) overallCGPAElement.textContent = overallCGPA.toFixed(2);
-  
+
+  const overallCGPA = calculateOverallCGPA();
+
+  setText('currentScore', `${Math.round(totalScore)}/100`);
+  setText('currentGrade', `${grade} (${gradePoints} points)`);
+  setText('requirement', requirementText);
+  setText('overallCGPA', overallCGPA.toFixed(2));
+
   const results = document.getElementById('cgpaResults');
   if (results) {
     results.classList.remove('hidden');
@@ -705,68 +789,60 @@ function calculateCGPA() {
   }
 }
 
+function setText(id, text) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = text;
+}
+
 function calculateOverallCGPA() {
   let totalCredits = 0;
   let weightedPoints = 0;
-  
+
   Object.entries(subjects).forEach(([subjectName, subjectData]) => {
     const marks = subjectMarks[subjectName];
-    if (marks) {
-      const caScores = [marks.ct1, marks.ct2, marks.assignment].sort((a, b) => b - a);
-      const caTotal = caScores[0] + caScores[1];
-      const totalScore = caTotal + marks.midSem + marks.endSem;
-      const percentage = (totalScore / 100) * 100;
-      
-      let gradePoints = 0;
-      for (const [, gradeData] of Object.entries(gradeScale)) {
-        if (percentage >= gradeData.min) {
-          gradePoints = gradeData.points;
-          break;
-        }
-      }
-      
-      totalCredits += subjectData.credits;
-      weightedPoints += gradePoints * subjectData.credits;
-    }
+    if (!marks) return;
+
+    const caScores = [marks.ct1, marks.ct2, marks.assignment].sort((a, b) => b - a);
+    const caTotal = caScores[0] + caScores[1];
+    const totalScore = caTotal + marks.midSem + marks.endSem;
+    const percentage = totalScore;
+
+    const gradePoints = calculateGradePoints(percentage);
+
+    totalCredits += subjectData.credits;
+    weightedPoints += gradePoints * subjectData.credits;
   });
-  
+
   return totalCredits > 0 ? weightedPoints / totalCredits : 0;
 }
 
 // SECTION 4: Performance Modes
 function calculateModeDurations() {
-  const totalChapters = Object.values(subjects).reduce((sum, subject) => sum + subject.totalChapters, 0);
-  
+  const totalChapters = Object.values(subjects).reduce(
+    (sum, subject) => sum + subject.chapters.length,
+    0
+  );
+
   const easyDuration = document.getElementById('easyDuration');
   const normalDuration = document.getElementById('normalDuration');
   const intenseChapters = document.getElementById('intenseChapters');
-  
+
   if (easyDuration) easyDuration.textContent = `${totalChapters} days`;
   if (normalDuration) normalDuration.textContent = `${Math.ceil(totalChapters / 2)} days`;
   if (intenseChapters) intenseChapters.textContent = `${Math.ceil(totalChapters / 7)}`;
 }
 
 function selectPerformanceMode(mode) {
-  console.log('Selecting performance mode:', mode);
-  
-  // Update UI
-  document.querySelectorAll('.mode-card').forEach(card => {
-    card.classList.remove('selected');
-  });
+  document.querySelectorAll('[data-mode]').forEach(el => el.classList.remove('selected'));
+
   const selectedCard = document.querySelector(`[data-mode="${mode}"]`);
-  if (selectedCard) {
-    selectedCard.classList.add('selected');
-  }
-  
-  // Update study mode selector in Section 1
+  if (selectedCard) selectedCard.classList.add('selected');
+
   const studyModeSelect = document.getElementById('studyMode');
-  if (studyModeSelect) {
-    studyModeSelect.value = mode;
-  }
-  
-  // Show mode details
+  if (studyModeSelect) studyModeSelect.value = mode;
+
   showModeBreakdown(mode);
-  
+
   const details = document.getElementById('selectedModeDetails');
   if (details) {
     details.classList.remove('hidden');
@@ -777,15 +853,15 @@ function selectPerformanceMode(mode) {
 function showModeBreakdown(mode) {
   const breakdown = document.getElementById('modeBreakdown');
   if (!breakdown) return;
-  
+
   const subjectList = Object.entries(subjects).sort((a, b) => b[1].credits - a[1].credits);
-  
+
   breakdown.innerHTML = '';
-  
+
   subjectList.forEach(([subjectName, subjectData]) => {
     const item = document.createElement('div');
     item.className = 'breakdown-item';
-    
+
     let allocation = '';
     if (mode === 'easy') {
       allocation = `${subjectData.totalChapters} days (1 chapter/day)`;
@@ -795,12 +871,12 @@ function showModeBreakdown(mode) {
       const priority = subjectData.credits >= 3 ? 'High Priority' : 'Medium Priority';
       allocation = `${priority} - ${subjectData.totalChapters} chapters`;
     }
-    
+
     item.innerHTML = `
       <span>${subjectName} (${subjectData.credits} credits)</span>
       <span>${allocation}</span>
     `;
-    
+
     breakdown.appendChild(item);
   });
 }
