@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Semester 3 Study Planner</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
+    <!-- Main application container -->
     <div class="container">
+        <!-- Header: title and author attribution -->
         <header class="header">
             <h1>Semester 3 Study Planner</h1>
             <p class="subtitle">Made By Yug Shah 🦋 with love</p>
         </header>
 
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-tab="study-plan">Study Plan Generator</button>
-            <button class="nav-tab" data-tab="folder-manager">Folder Manager</button>
-            <button class="nav-tab" data-tab="cgpa-calculator">CGPA Calculator</button>
-            <button class="nav-tab" data-tab="performance-modes">Performance Modes</button>
+        <!-- Navigation tabs for switching between application sections -->
+        <nav class="nav-tabs" aria-label="Main navigation">
+            <button class="nav-tab active" data-tab="study-plan" type="button">Study Plan Generator</button>
+            <button class="nav-tab" data-tab="folder-manager" type="button">Folder Manager</button>
+            <button class="nav-tab" data-tab="cgpa-calculator" type="button">CGPA Calculator</button>
+            <button class="nav-tab" data-tab="performance-modes" type="button">Performance Modes</button>
         </nav>
 
         <!-- Section 1: Study Plan Generator -->
@@ -31,25 +33,27 @@
                 <div class="card__body">
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Study Mode</label>
-                            <select id="studyMode" class="form-control">
+                            <!-- Label explicitly associated with the study mode select for accessibility -->
+                            <label for="studyMode" class="form-label">Study Mode</label>
+                            <select id="studyMode" name="studyMode" class="form-control">
                                 <option value="easy">Easy Mode (1 chapter/day)</option>
                                 <option value="normal" selected>Normal Mode (2 chapters/day)</option>
                                 <option value="intense">Intense Mode (7-day crash)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Semester Start Date</label>
-                            <input type="date" id="startDate" class="form-control">
+                            <label for="startDate" class="form-label">Semester Start Date</label>
+                            <input type="date" id="startDate" name="startDate" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">End Semester Exam Date</label>
-                            <input type="date" id="examDate" class="form-control">
+                            <label for="examDate" class="form-label">End Semester Exam Date</label>
+                            <input type="date" id="examDate" name="examDate" class="form-control">
                         </div>
                     </div>
                     
-                    <button id="generatePlan" class="btn btn--primary">Generate Study Plan</button>
+                    <button id="generatePlan" class="btn btn--primary" type="button">Generate Study Plan</button>
                     
+                    <!-- Dynamic study plan output container (hidden until generated) -->
                     <div id="studyPlanOutput" class="study-plan-output hidden">
                         <h3>Your Study Schedule</h3>
                         <div class="progress-summary">
@@ -70,12 +74,13 @@
                 <div class="card__header">
                     <h2>Study Material Organizer</h2>
                     <p>Organize your study materials by subject and chapter</p>
-                    <p class="text--danger">Sorry But this is under progress Because I am learning sql</p>
+                    <p class="text--danger">Sorry, but this feature is in progress because I am learning SQL.</p>
                 </div>
                 <div class="card__body">
                     <div class="folder-controls">
-                        <input type="text" id="searchMaterials" class="form-control" placeholder="Search materials...">
-                        <button id="addMaterial" class="btn btn--secondary">Add Material</button>
+                        <!-- Search input with an accessible label since visible label is absent -->
+                        <input type="text" id="searchMaterials" name="searchMaterials" class="form-control" placeholder="Search materials..." aria-label="Search study materials">
+                        <button id="addMaterial" class="btn btn--secondary" type="button">Add Material</button>
                     </div>
                     
                     <div class="folder-structure" id="folderStructure">
@@ -94,37 +99,38 @@
                 </div>
                 <div class="card__body">
                     <div class="subject-selector">
-                        <label class="form-label">Select Subject</label>
-                        <select id="subjectSelect" class="form-control">
+                        <label for="subjectSelect" class="form-label">Select Subject</label>
+                        <select id="subjectSelect" name="subjectSelect" class="form-control">
                             <!-- Options will be populated by JavaScript -->
                         </select>
                     </div>
 
                     <div class="marks-input-grid">
                         <div class="form-group">
-                            <label class="form-label">Class Test 1 (10 marks)</label>
-                            <input type="number" id="ct1" class="form-control" max="10" min="0">
+                            <label for="ct1" class="form-label">Class Test 1 (10 marks)</label>
+                            <input type="number" id="ct1" name="ct1" class="form-control" max="10" min="0">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Class Test 2 (10 marks)</label>
-                            <input type="number" id="ct2" class="form-control" max="10" min="0">
+                            <label for="ct2" class="form-label">Class Test 2 (10 marks)</label>
+                            <input type="number" id="ct2" name="ct2" class="form-control" max="10" min="0">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Assignment (10 marks)</label>
-                            <input type="number" id="assignment" class="form-control" max="10" min="0">
+                            <label for="assignment" class="form-label">Assignment (10 marks)</label>
+                            <input type="number" id="assignment" name="assignment" class="form-control" max="10" min="0">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Mid Semester (20 marks)</label>
-                            <input type="number" id="midSem" class="form-control" max="20" min="0">
+                            <label for="midSem" class="form-label">Mid Semester (20 marks)</label>
+                            <input type="number" id="midSem" name="midSem" class="form-control" max="20" min="0">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">End Semester (60 marks)</label>
-                            <input type="number" id="endSem" class="form-control" max="60" min="0">
+                            <label for="endSem" class="form-label">End Semester (60 marks)</label>
+                            <input type="number" id="endSem" name="endSem" class="form-control" max="60" min="0">
                         </div>
                     </div>
 
-                    <button id="calculateCGPA" class="btn btn--primary">Calculate CGPA</button>
+                    <button id="calculateCGPA" class="btn btn--primary" type="button">Calculate CGPA</button>
 
+                    <!-- Dynamic CGPA results container (hidden until calculated) -->
                     <div id="cgpaResults" class="cgpa-results hidden">
                         <div class="results-grid">
                             <div class="result-card">
@@ -175,7 +181,7 @@
                                 </div>
                             </div>
                             <p class="mode-description">Relaxed pace with plenty of time for revision</p>
-                            <button class="btn btn--outline mode-select" data-mode="easy">Select Easy Mode</button>
+                            <button class="btn btn--outline mode-select" data-mode="easy" type="button">Select Easy Mode</button>
                         </div>
 
                         <div class="mode-card" data-mode="normal">
@@ -195,7 +201,7 @@
                                 </div>
                             </div>
                             <p class="mode-description">Balanced approach with steady progress</p>
-                            <button class="btn btn--outline mode-select" data-mode="normal">Select Normal Mode</button>
+                            <button class="btn btn--outline mode-select" data-mode="normal" type="button">Select Normal Mode</button>
                         </div>
 
                         <div class="mode-card" data-mode="intense">
@@ -215,10 +221,11 @@
                                 </div>
                             </div>
                             <p class="mode-description">Last-minute preparation with high intensity</p>
-                            <button class="btn btn--outline mode-select" data-mode="intense">Select Intense Mode</button>
+                            <button class="btn btn--outline mode-select" data-mode="intense" type="button">Select Intense Mode</button>
                         </div>
                     </div>
 
+                    <!-- Dynamic selected mode details container (hidden until a mode is chosen) -->
                     <div id="selectedModeDetails" class="selected-mode-details hidden">
                         <h3>Selected Mode Details</h3>
                         <div id="modeBreakdown" class="mode-breakdown"></div>
@@ -228,33 +235,35 @@
         </section>
     </div>
 
-    <!-- Add Material Modal -->
-<!--     <div id="addMaterialModal" class="modal hidden">
+    <!-- Add Material Modal: disabled while SQL backend is in development.
+         Wrapped in a single comment block to avoid nested comment parsing issues. -->
+    <!--
+    <div id="addMaterialModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Add Study Material</h3>
-                <button class="modal-close">&times;</button>
+                <button class="modal-close" type="button" aria-label="Close modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">Subject</label>
-                    <select id="materialSubject" class="form-control">
-                        <!-- Options populated by JS -->
+                    <label for="materialSubject" class="form-label">Subject</label>
+                    <select id="materialSubject" name="materialSubject" class="form-control">
+                        Options populated by JavaScript
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Chapter</label>
-                    <select id="materialChapter" class="form-control">
-                        <!-- Options populated by JS -->
+                    <label for="materialChapter" class="form-label">Chapter</label>
+                    <select id="materialChapter" name="materialChapter" class="form-control">
+                        Options populated by JavaScript
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Material Name</label>
-                    <input type="text" id="materialName" class="form-control" placeholder="e.g., Lecture Notes, Textbook PDF">
+                    <label for="materialName" class="form-label">Material Name</label>
+                    <input type="text" id="materialName" name="materialName" class="form-control" placeholder="e.g., Lecture Notes, Textbook PDF">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Material Type</label>
-                    <select id="materialType" class="form-control">
+                    <label for="materialType" class="form-label">Material Type</label>
+                    <select id="materialType" name="materialType" class="form-control">
                         <option value="pdf">PDF Document</option>
                         <option value="ppt">PowerPoint Presentation</option>
                         <option value="notes">Handwritten Notes</option>
@@ -264,12 +273,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn--secondary" id="cancelMaterial">Cancel</button>
-                <button class="btn btn--primary" id="saveMaterial">Add Material</button>
+                <button class="btn btn--secondary" id="cancelMaterial" type="button">Cancel</button>
+                <button class="btn btn--primary" id="saveMaterial" type="button">Add Material</button>
             </div>
         </div>
     </div>
- -->
+    -->
+
     <script src="app.js"></script>
 </body>
 </html>
