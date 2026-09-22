@@ -1,4 +1,7 @@
 :root {
+  color-scheme: light dark;
+  caret-color: var(--color-primary);
+
   /* Primitive Color Tokens */
   --color-white: #ffffff;
   --color-black: #000000;
@@ -33,7 +36,7 @@
   --color-bg-7: rgb(236 72 153 / 8%);
   --color-bg-8: rgb(6 182 212 / 8%);
 
-  /* Semantic Color Tokens (Light Mode) */
+  /* Semantic Color Tokens (Light Mode) — solid fallbacks for older browsers */
   --color-background: var(--color-cream-50);
   --color-surface: var(--color-cream-100);
   --color-text: var(--color-slate-900);
@@ -41,18 +44,19 @@
   --color-primary: var(--color-teal-500);
   --color-primary-hover: var(--color-teal-600);
   --color-primary-active: var(--color-teal-700);
-  --color-secondary: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
-  --color-secondary-hover: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
-  --color-secondary-active: color-mix(in srgb, var(--color-brown-600) 25%, transparent);
-  --color-border: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+  --color-secondary: rgba(94, 82, 64, 0.12);
+  --color-secondary-hover: rgba(94, 82, 64, 0.20);
+  --color-secondary-active: rgba(94, 82, 64, 0.25);
+  --color-border: rgba(94, 82, 64, 0.20);
   --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
-  --color-card-border-inner: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+  --color-card-border: rgba(94, 82, 64, 0.12);
+  --color-card-border-inner: rgba(94, 82, 64, 0.12);
   --color-error: var(--color-red-500);
   --color-success: var(--color-teal-500);
   --color-warning: var(--color-orange-500);
   --color-info: var(--color-slate-500);
-  --color-focus-ring: color-mix(in srgb, var(--color-teal-500) 40%, transparent);
+  --color-focus-ring: rgba(33, 128, 141, 0.40);
+  --color-border-secondary: rgba(94, 82, 64, 0.20);
 
   /* Common style patterns */
   --focus-ring: 0 0 0 3px var(--color-focus-ring);
@@ -141,25 +145,25 @@
     --color-background: var(--color-charcoal-700);
     --color-surface: var(--color-charcoal-800);
     --color-text: var(--color-gray-200);
-    --color-text-secondary: color-mix(in srgb, var(--color-gray-300) 70%, transparent);
+    --color-text-secondary: rgba(167, 169, 169, 0.70);
     --color-primary: var(--color-teal-300);
     --color-primary-hover: var(--color-teal-400);
     --color-primary-active: var(--color-teal-800);
-    --color-secondary: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
-    --color-secondary-hover: color-mix(in srgb, var(--color-gray-400) 25%, transparent);
-    --color-secondary-active: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
-    --color-border: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
+    --color-secondary: rgba(119, 124, 124, 0.15);
+    --color-secondary-hover: rgba(119, 124, 124, 0.25);
+    --color-secondary-active: rgba(119, 124, 124, 0.30);
+    --color-border: rgba(119, 124, 124, 0.30);
     --color-btn-primary-text: var(--color-slate-900);
-    --color-card-border: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
-    --color-card-border-inner: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
+    --color-card-border: rgba(119, 124, 124, 0.20);
+    --color-card-border-inner: rgba(119, 124, 124, 0.15);
     --color-error: var(--color-red-400);
     --color-success: var(--color-teal-300);
     --color-warning: var(--color-orange-400);
     --color-info: var(--color-gray-300);
-    --color-focus-ring: color-mix(in srgb, var(--color-teal-300) 40%, transparent);
+    --color-focus-ring: rgba(50, 184, 198, 0.40);
     --shadow-inset-sm: inset 0 1px 0 rgb(255 255 255 / 10%),
       inset 0 -1px 0 rgb(0 0 0 / 15%);
-    --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+    --color-border-secondary: rgba(119, 124, 124, 0.20);
     --select-caret: var(--select-caret-dark);
   }
 }
@@ -177,25 +181,25 @@
   --color-background: var(--color-charcoal-700);
   --color-surface: var(--color-charcoal-800);
   --color-text: var(--color-gray-200);
-  --color-text-secondary: color-mix(in srgb, var(--color-gray-300) 70%, transparent);
+  --color-text-secondary: rgba(167, 169, 169, 0.70);
   --color-primary: var(--color-teal-300);
   --color-primary-hover: var(--color-teal-400);
   --color-primary-active: var(--color-teal-800);
-  --color-secondary: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
-  --color-secondary-hover: color-mix(in srgb, var(--color-gray-400) 25%, transparent);
-  --color-secondary-active: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
-  --color-border: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
+  --color-secondary: rgba(119, 124, 124, 0.15);
+  --color-secondary-hover: rgba(119, 124, 124, 0.25);
+  --color-secondary-active: rgba(119, 124, 124, 0.30);
+  --color-border: rgba(119, 124, 124, 0.30);
   --color-btn-primary-text: var(--color-slate-900);
-  --color-card-border: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
-  --color-card-border-inner: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
+  --color-card-border: rgba(119, 124, 124, 0.20);
+  --color-card-border-inner: rgba(119, 124, 124, 0.15);
   --color-error: var(--color-red-400);
   --color-success: var(--color-teal-300);
   --color-warning: var(--color-orange-400);
   --color-info: var(--color-gray-300);
-  --color-focus-ring: color-mix(in srgb, var(--color-teal-300) 40%, transparent);
+  --color-focus-ring: rgba(50, 184, 198, 0.40);
   --shadow-inset-sm: inset 0 1px 0 rgb(255 255 255 / 10%),
     inset 0 -1px 0 rgb(0 0 0 / 15%);
-  --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+  --color-border-secondary: rgba(119, 124, 124, 0.20);
   --select-caret: var(--select-caret-dark);
 }
 
@@ -216,21 +220,72 @@
   --color-primary: var(--color-teal-500);
   --color-primary-hover: var(--color-teal-600);
   --color-primary-active: var(--color-teal-700);
-  --color-secondary: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
-  --color-secondary-hover: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
-  --color-secondary-active: color-mix(in srgb, var(--color-brown-600) 25%, transparent);
-  --color-border: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+  --color-secondary: rgba(94, 82, 64, 0.12);
+  --color-secondary-hover: rgba(94, 82, 64, 0.20);
+  --color-secondary-active: rgba(94, 82, 64, 0.25);
+  --color-border: rgba(94, 82, 64, 0.20);
   --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
-  --color-card-border-inner: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+  --color-card-border: rgba(94, 82, 64, 0.12);
+  --color-card-border-inner: rgba(94, 82, 64, 0.12);
   --color-error: var(--color-red-500);
   --color-success: var(--color-teal-500);
   --color-warning: var(--color-orange-500);
   --color-info: var(--color-slate-500);
-  --color-focus-ring: color-mix(in srgb, var(--color-teal-500) 40%, transparent);
+  --color-focus-ring: rgba(33, 128, 141, 0.40);
   --shadow-inset-sm: inset 0 1px 0 rgb(255 255 255 / 15%),
     inset 0 -1px 0 rgb(0 0 0 / 3%);
+  --color-border-secondary: rgba(94, 82, 64, 0.20);
   --select-caret: var(--select-caret-light);
+}
+
+@supports (color: color-mix(in srgb, red, blue)) {
+  :root {
+    --color-secondary: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+    --color-secondary-hover: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+    --color-secondary-active: color-mix(in srgb, var(--color-brown-600) 25%, transparent);
+    --color-border: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+    --color-card-border: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+    --color-card-border-inner: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+    --color-focus-ring: color-mix(in srgb, var(--color-teal-500) 40%, transparent);
+    --color-border-secondary: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+  }
+
+  :root[data-color-scheme="light"] {
+    --color-secondary: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+    --color-secondary-hover: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+    --color-secondary-active: color-mix(in srgb, var(--color-brown-600) 25%, transparent);
+    --color-border: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+    --color-card-border: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+    --color-card-border-inner: color-mix(in srgb, var(--color-brown-600) 12%, transparent);
+    --color-focus-ring: color-mix(in srgb, var(--color-teal-500) 40%, transparent);
+    --color-border-secondary: color-mix(in srgb, var(--color-brown-600) 20%, transparent);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-text-secondary: color-mix(in srgb, var(--color-gray-300) 70%, transparent);
+      --color-secondary: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
+      --color-secondary-hover: color-mix(in srgb, var(--color-gray-400) 25%, transparent);
+      --color-secondary-active: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
+      --color-border: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
+      --color-card-border: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+      --color-card-border-inner: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
+      --color-focus-ring: color-mix(in srgb, var(--color-teal-300) 40%, transparent);
+      --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+    }
+  }
+
+  :root[data-color-scheme="dark"] {
+    --color-text-secondary: color-mix(in srgb, var(--color-gray-300) 70%, transparent);
+    --color-secondary: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
+    --color-secondary-hover: color-mix(in srgb, var(--color-gray-400) 25%, transparent);
+    --color-secondary-active: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
+    --color-border: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
+    --color-card-border: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+    --color-card-border-inner: color-mix(in srgb, var(--color-gray-400) 15%, transparent);
+    --color-focus-ring: color-mix(in srgb, var(--color-teal-300) 40%, transparent);
+    --color-border-secondary: color-mix(in srgb, var(--color-gray-400) 20%, transparent);
+  }
 }
 
 /* Base styles */
@@ -242,11 +297,13 @@ html {
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  overflow-wrap: break-word;
 }
 
 body {
   margin: 0;
   padding: 0;
+  min-block-size: 100svb;
 }
 
 *,
@@ -340,6 +397,8 @@ pre code {
   border: none;
   text-decoration: none;
   position: relative;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .btn:focus-visible {
@@ -399,9 +458,11 @@ pre code {
   width: 100%;
 }
 
-.btn:disabled {
+.btn:disabled,
+.btn[aria-disabled="true"] {
   opacity: 0.5;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* Form elements */
@@ -422,6 +483,8 @@ pre code {
 textarea.form-control {
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
+  min-block-size: calc(var(--font-size-base) * 6);
+  resize: vertical;
 }
 
 select.form-control {
@@ -431,14 +494,38 @@ select.form-control {
   appearance: none;
   background-image: var(--select-caret);
   background-repeat: no-repeat;
-  background-position: right var(--space-12) center;
-  background-size: 16px;
+  background-position: calc(100% - var(--space-12)) center;
+  background-size: 1rem;
   cursor: pointer;
 }
 
 .form-control:focus {
   border-color: var(--color-primary);
   outline: var(--focus-outline);
+}
+
+.form-control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--color-secondary);
+}
+
+.form-control:invalid:not(:placeholder-shown) {
+  border-color: var(--color-error);
+}
+
+.form-control:invalid:not(:placeholder-shown):focus {
+  outline-color: var(--color-error);
+}
+
+@supports selector(:user-invalid) {
+  .form-control:user-invalid {
+    border-color: var(--color-error);
+  }
+
+  .form-control:user-invalid:focus {
+    outline-color: var(--color-error);
+  }
 }
 
 .form-label {
@@ -450,6 +537,35 @@ select.form-control {
 
 .form-group {
   margin-block-end: var(--space-16);
+}
+
+.form-group:has(.form-control:invalid:not(:placeholder-shown)) .form-label,
+@supports selector(:user-invalid) {
+  .form-group:has(.form-control:user-invalid) .form-label {
+    color: var(--color-error);
+  }
+}
+
+.form-error-message {
+  display: none;
+  margin-block-start: var(--space-4);
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+}
+
+.form-control:invalid:not(:placeholder-shown) + .form-error-message {
+  display: block;
+}
+
+@supports selector(:user-invalid) {
+  .form-control:user-invalid + .form-error-message {
+    display: block;
+  }
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--color-primary);
 }
 
 /* Card component */
@@ -634,7 +750,8 @@ select.form-control {
 
 @font-face {
   font-family: 'FKGroteskNeue';
-  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+  src: local('FKGroteskNeue'),
+    url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -669,6 +786,7 @@ select.form-control {
   border-block-end: 2px solid var(--color-border);
   overflow-x: auto;
   padding-block-end: var(--space-4);
+  scrollbar-width: thin;
 }
 
 .nav-tab {
@@ -770,6 +888,8 @@ select.form-control {
 .plan-day input[type="checkbox"] {
   width: 16px;
   height: 16px;
+  min-width: 16px;
+  min-height: 16px;
 }
 
 .plan-day-info {
@@ -1022,6 +1142,7 @@ select.form-control {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  overscroll-behavior: contain;
 }
 
 .modal.hidden {
@@ -1031,11 +1152,11 @@ select.form-control {
 .modal-content {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
-  width: 90%;
-  max-width: 500px;
+  width: min(90%, 500px);
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
+  overscroll-behavior: contain;
 }
 
 .modal-header {
@@ -1172,6 +1293,20 @@ select.form-control {
   font-size: 1.2em;
 }
 
+@media (prefers-contrast: more), (forced-colors: active) {
+  :focus-visible,
+  .btn:focus-visible {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+
+  .form-control:focus,
+  .form-control:invalid:not(:placeholder-shown):focus {
+    outline: 2px solid CanvasText;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1180,5 +1315,28 @@ select.form-control {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .modal,
+  .nav-tabs,
+  .folder-controls button {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .card,
+  .modal-content,
+  .study-plan-output,
+  .cgpa-results,
+  .selected-mode-details,
+  .folder-structure {
+    box-shadow: none;
+    border-color: #000;
   }
 }
